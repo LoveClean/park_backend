@@ -1,0 +1,63 @@
+server:
+  port: 8089
+  servlet:
+    session:
+      timeout: 1800
+
+# 应用信息
+app:
+  app-name: park
+  app-host: http://park.com
+  allow-generate-api: true
+  allow-cross-domain-access: true
+  # 开发dev 测试test  生产 master
+  env: dev
+
+# 对象存储配置
+obs:
+  accessKeyId: ROFOCBBENS1RWYEE0AEA
+  accessKeySecret: jJrKsEY3cy5XfXvT5eeBkFjDd5YAQGWCx2qEwuVe
+  upload-endpoint: http://obs.cn-east-2.myhuaweicloud.com
+  download-endpoint: http://obs-312.obs.cn-east-2.myhuaweicloud.com
+  bucketName: obs-312
+  # 下载地址的有效时长，单位为ms，默认为半小时
+  download-url-expiration: 1800000
+  #样式
+#  styleName: resize,h_250
+
+img:
+  width: 2000
+  height: 2000
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    database: 0
+    host: 198.19.56.204
+#    host: localhost
+    port: 6379
+    password:
+    timeout: 3600
+  main:
+    banner-mode: console
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  datasource:
+    name: datasource
+    url: jdbc:mysql://122.112.225.34:3306/yuanqufuwu?serverTimezone=GMT%2b8
+    username: root
+    password: "!Q1q1q1q"
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*Mapper.xml
+
+logging:
+  path: /base-web-log
