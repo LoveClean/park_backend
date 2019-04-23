@@ -47,9 +47,9 @@ public class AdminServiceImpl implements AdminService {
         if (StringUtil.isBlank(phone) || StringUtil.isBlank(password)) {
             return ResponseEntityUtil.fail(Errors.SYSTEM_REQUEST_PARAM_ERROR);
         }
-        if (!AccountValidatorUtil.isMobile(phone)) {
-            return ResponseEntityUtil.fail("请输入正确的手机号");
-        }
+//        if (!AccountValidatorUtil.isMobile(phone)) {
+//            return ResponseEntityUtil.fail("请输入正确的手机号");
+//        }
         String MD5Password = MD5Util.MD5(password);
         Admin record = adminMapper.login(phone, MD5Password);
         if (record == null) {

@@ -15,7 +15,7 @@ public interface AdminMapper {
 
     int insertSelective(Admin record);
 
-    @Select("SELECT * FROM sys_admin WHERE status != -1 AND phone = #{phone} AND password = #{password}")
+    @Select("SELECT * FROM sys_admin WHERE status != -1 AND (phone = #{phone} OR account = #{phone}) AND password = #{password}")
     Admin login(@Param("phone") String phone, @Param("password") String password);
 
     Admin selectByPrimaryKey(Integer id);
