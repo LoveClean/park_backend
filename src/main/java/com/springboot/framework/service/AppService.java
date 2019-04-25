@@ -21,7 +21,7 @@ public interface AppService {
 
     ResponseEntity<List<App>> selectList();
 
-    ResponseEntity<Integer> updateByPrimaryKeySelective(App record);
+    ResponseEntity<Integer> updateByPrimaryKeySelective(App record, Integer[] parkIds2, Integer[] parkIds3);
 
     ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy);
 

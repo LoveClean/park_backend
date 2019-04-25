@@ -7,6 +7,8 @@ public class ParkUpdateSelective {
     private String location;
     private String address;
     private Byte sort;
+    private Integer[] appIds2;
+    private Integer[] appIds3;
 
     public Integer getId() {
         return id;
@@ -54,5 +56,21 @@ public class ParkUpdateSelective {
 
     public void setSort(Byte sort) {
         this.sort = sort;
+    }
+
+    public Integer[] getAppIds2() {
+        return appIds2;
+    }
+
+    public void setAppIds2(Integer[] appIds2) {
+        this.appIds2 = appIds2;
+    }
+
+    public Integer[] getAppIds3() {
+        return appIds3;
+    }
+
+    public void setAppIds3(Integer[] appIds3) {
+        this.appIds3 = appIds3;
     }
 }

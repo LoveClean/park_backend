@@ -34,6 +34,8 @@ public class ParkServiceImpl implements ParkService {
 
     @Override
     public ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy) {
+        appDetailMapper.deleteByParkId(id);
+        connectionMapper.deleteByParkId(id);
         return ResponseEntityUtil.success(parkMapper.deleteByPrimaryKey(id, updateBy));
     }
 
@@ -101,9 +103,28 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public ResponseEntity<Integer> updateByPrimaryKeySelective(Park record) {
+    public ResponseEntity<Integer> updateByPrimaryKeySelective(Park record, Integer[] appIds2, Integer[] appIds3) {
         if (parkMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("园区更新失败");
+        }
+        Integer parkId = record.getId();
+        if (appIds2.length != 0) {
+            for (Integer appId2 : appIds2) {
+                Connection connection = new Connection();
+                connection.setAppId(appId2);
+                connection.setParkId(parkId);
+                connectionMapper.insertSelective(connection);
+                AppDetail appDetail = new AppDetail();
+                appDetail.setAppId(appId2);
+                appDetail.setParkId(parkId);
+                appDetailMapper.insertSelective(appDetail);
+            }
+        }
+        if (appIds3.length != 0) {
+            for (Integer appId3 : appIds3) {
+                connectionMapper.deleteByParkIdAndAppId(parkId, appId3);
+                appDetailMapper.deleteByParkIdAndAppId(parkId, appId3);
+            }
         }
         return ResponseEntityUtil.success();
     }
