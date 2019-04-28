@@ -12,6 +12,8 @@ app:
   allow-cross-domain-access: true
   # 开发dev 测试test  生产 master
   env: dev
+  # 腾讯地图key
+  tencentMapKey: WX7BZ-TYPKQ-GTJ5Z-GJUIQ-G66GF-CSFGQ
 
 # 对象存储配置
 obs:

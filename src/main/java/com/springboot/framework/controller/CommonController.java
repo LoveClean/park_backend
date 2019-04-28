@@ -1,9 +1,13 @@
 package com.springboot.framework.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.springboot.framework.annotation.ACS;
+import com.springboot.framework.config.AppConfig;
 import com.springboot.framework.contants.Const;
 import com.springboot.framework.service.RedisService;
 import com.springboot.framework.util.StringUtil;
+import com.springboot.framework.util.ToolsUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +24,34 @@ import java.util.Random;
 
 /**
  * @author haungpengfei
- * @version V1.0
+ * @version V1.1
  * @Description: 工具controller
- * @date 2019年3月26日
+ * @date 2019年4月28日
  */
 @Api(description = "公共模块", produces = "application/json")
 @RestController
 @RequestMapping("/common/")
 public class CommonController {
 
+    @Resource
+    private AppConfig appConfig;
     //	@Resource
 //	private MobileCaptchaService mobileCaptchaService;
     @Resource
     private RedisService redisService;
+
+    /**
+     * 根据地址名称获取经纬度
+     */
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "根据地址获取坐标", notes = "本接口提供由地址描述到所述位置坐标的转换，与逆地址解析的过程正好相反。")
+    @GetMapping(value = "geocoderByAddress")
+    public JSONObject geocoderByAddress(@RequestParam String address) {
+        String url = "https://apis.map.qq.com/ws/geocoder/v1/";
+//        System.out.println(appConfig.getTencentMapKey());
+        String jsonStrToken = ToolsUtil.sendGet(url, "address=" + address + "&key=" + appConfig.getTencentMapKey());
+        return JSON.parseObject(jsonStrToken);
+    }
 
 //    /**
 //     * 发送验证码

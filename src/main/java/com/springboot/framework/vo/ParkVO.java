@@ -3,6 +3,7 @@ package com.springboot.framework.vo;
 import com.springboot.framework.dao.entity.Area;
 import com.springboot.framework.dao.entity.Park;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ParkVO {
@@ -11,6 +12,9 @@ public class ParkVO {
     private String logo;
     private String location;
     private String address;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
+    private String introduction;
     private Byte sort;
     private String createBy;
     private Date createDate;
@@ -32,6 +36,9 @@ public class ParkVO {
         this.logo = park.getLogo();
         this.location = park.getLocation();
         this.address = park.getAddress();
+        this.longitude = park.getLongitude();
+        this.latitude = park.getLatitude();
+        this.introduction = park.getIntroduction();
         this.sort = park.getSort();
         this.createBy = park.getCreateBy();
         this.createDate = park.getCreateDate();
@@ -107,6 +114,30 @@ public class ParkVO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
     public Byte getSort() {
