@@ -44,11 +44,25 @@ public class CommonController {
      * 根据地址名称获取经纬度
      */
     @ACS(allowAnonymous = true)
-    @ApiOperation(value = "根据地址获取坐标", notes = "本接口提供由地址描述到所述位置坐标的转换，与逆地址解析的过程正好相反。")
+    @ApiOperation(value = "逆地址解析（坐标位置描述）", notes = "本接口提供由坐标到坐标所在位置的文字描述的转换。输入坐标返回地理位置信息和附近poi列表。目前应用于物流、出行、O2O、社交等场景。服务响应速度快、稳定，支撑亿级调用。\n" +
+            "     1）满足传统对省市区、乡镇村、门牌号、道路及交叉口、河流、湖泊、桥、poi列表的需求。\n" +
+            "     2）业界首创，提供易于人理解的地址描述：海淀区中钢国际广场(欧美汇购物中心北)。\n" +
+            "     3）提供精准的商圈、知名的大型区域、附近知名的一级地标、代表当前位置的二级地标等。")
+    @GetMapping(value = "geocoderByLocation")
+    public JSONObject geocoderByLocation(@RequestParam String lat, @RequestParam String lng) {
+        String url = "https://apis.map.qq.com/ws/geocoder/v1/";
+        String jsonStrToken = ToolsUtil.sendGet(url, "location=" + lat + "," + lng + "&key=" + appConfig.getTencentMapKey());
+        return JSON.parseObject(jsonStrToken);
+    }
+
+    /**
+     * 根据地址名称获取经纬度
+     */
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "地址解析（地址转坐标）", notes = "本接口提供由地址描述到所述位置坐标的转换，与逆地址解析的过程正好相反。")
     @GetMapping(value = "geocoderByAddress")
     public JSONObject geocoderByAddress(@RequestParam String address) {
         String url = "https://apis.map.qq.com/ws/geocoder/v1/";
-//        System.out.println(appConfig.getTencentMapKey());
         String jsonStrToken = ToolsUtil.sendGet(url, "address=" + address + "&key=" + appConfig.getTencentMapKey());
         return JSON.parseObject(jsonStrToken);
     }
