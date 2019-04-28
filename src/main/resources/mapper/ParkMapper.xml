@@ -7,6 +7,9 @@
     <result column="logo" jdbcType="VARCHAR" property="logo" />
     <result column="location" jdbcType="VARCHAR" property="location" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="sort" jdbcType="TINYINT" property="sort" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
@@ -15,8 +18,8 @@
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, logo, location, address, sort, create_by, create_date, update_by, update_date, 
-    status
+    id, name, logo, location, address, longitude, latitude, introduction, sort, create_by, 
+    create_date, update_by, update_date, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -30,11 +33,13 @@
 <!--  </delete>-->
   <insert id="insert" parameterType="com.springboot.framework.dao.entity.Park">
     insert into tb_park (id, name, logo, 
-      location, address, sort, 
+      location, address, longitude, 
+      latitude, introduction, sort, 
       create_by, create_date, update_by, 
       update_date, status)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
-      #{location,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT}, 
+      #{location,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, 
+      #{latitude,jdbcType=DECIMAL}, #{introduction,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT}, 
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
       #{updateDate,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
@@ -55,6 +60,15 @@
       </if>
       <if test="address != null">
         address,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="introduction != null">
+        introduction,
       </if>
       <if test="sort != null">
         sort,
@@ -91,6 +105,15 @@
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
       <if test="sort != null">
         #{sort,jdbcType=TINYINT},
       </if>
@@ -126,6 +149,15 @@
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
       <if test="sort != null">
         sort = #{sort,jdbcType=TINYINT},
       </if>
@@ -153,6 +185,9 @@
       logo = #{logo,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      introduction = #{introduction,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=TINYINT},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

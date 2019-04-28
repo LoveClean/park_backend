@@ -30,7 +30,7 @@ public class ParkController extends BaseController {
     @ApiOperation(value = "新增", notes = "新增应用")
     @PostMapping(value = "insertSelective")
     public ResponseEntity<Integer> insertSelective(@RequestBody ParkInsertSelective bean, HttpServletRequest request) {
-        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getSort(), super.getSessionUser(request).getName());
+        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getName());
         return parkService.insertSelective(record, bean.getAppIds());
     }
 
@@ -55,7 +55,7 @@ public class ParkController extends BaseController {
     @ApiOperation(value = "更新", notes = "更新应用")
     @PutMapping(value = "updateByPrimaryKeySelective")
     public ResponseEntity<Integer> updateByPrimaryKeySelective(@RequestBody ParkUpdateSelective bean, HttpServletRequest request) {
-        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getSort(), null);
+        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), null);
         record.setId(bean.getId());
         record.setUpdateBy(super.getSessionUser(request).getName());
         return parkService.updateByPrimaryKeySelective(record, bean.getAppIds2(), bean.getAppIds3());
