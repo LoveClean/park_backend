@@ -62,6 +62,25 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public ResponseEntity<Admin> loginParkAdmin(String phone, String password) {
+        if (StringUtil.isBlank(phone) || StringUtil.isBlank(password)) {
+            return ResponseEntityUtil.fail(Errors.SYSTEM_REQUEST_PARAM_ERROR);
+        }
+//        if (!AccountValidatorUtil.isMobile(phone)) {
+//            return ResponseEntityUtil.fail("请输入正确的手机号");
+//        }
+        String MD5Password = MD5Util.MD5(password);
+        Admin record = adminMapper.login(phone, MD5Password);
+        if (record == null) {
+            return ResponseEntityUtil.fail(Errors.USER_LOGIN_ERROR);
+        }
+        if (record.getStatus() != 2) {
+            return ResponseEntityUtil.fail(Errors.SYSTEM_NO_ACCESS);
+        }
+        return ResponseEntityUtil.success(record);
+    }
+
+    @Override
     public ResponseEntity<Admin> selectByPrimaryKey(Integer id) {
         return ResponseEntityUtil.success(adminMapper.selectByPrimaryKey(id));
     }

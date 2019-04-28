@@ -1,5 +1,6 @@
 package com.springboot.framework.controller;
 
+import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.contants.Const;
 import com.springboot.framework.controller.request.*;
 import com.springboot.framework.controller.response.PageResponseBean;
@@ -39,6 +40,7 @@ public class AdminController extends BaseController {
         return adminService.insertSelective(record);
     }
 
+    @ACS(allowAnonymous = true)
     @ApiOperation(value = "登陆", notes = "管理员登陆")
     @PostMapping(value = "login")
     public ResponseEntity<Admin> login(@Valid @RequestBody AdminLogin bean, HttpServletRequest request) {
@@ -56,6 +58,39 @@ public class AdminController extends BaseController {
         }
 
         ResponseEntity<Admin> response = adminService.login(bean.getPhone(), bean.getLoginPwd());
+        if (response.isSuccess()) {
+            Admin admin = response.getData();
+            //session.setAttribute(Const.CURRENT_USER, response.getData());
+            // 创建访问token
+            String accessToken = super.generateAccessToken(request);
+            admin.setAccessToken(accessToken);
+
+            super.setAccessTokenAttribute(request, accessToken);
+            super.setSessionUser(request, admin);
+
+            return ResponseEntityUtil.success(admin);
+        }
+        return response;
+    }
+
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "园区管理员登陆", notes = "园区管理员登陆")
+    @PostMapping(value = "loginPark")
+    public ResponseEntity<Admin> loginPark(@Valid @RequestBody AdminLogin bean, HttpServletRequest request) {
+        Boolean flag=false;
+        if (redisService.get(Const.VERIFY_CODE) != null) {
+            String randomCode = redisService.get(Const.VERIFY_CODE).toString();
+
+            if (StringUtil.isNotBlank(randomCode) && bean.getVerifyCode().toUpperCase().equals(randomCode.toUpperCase())) {
+                flag = true;
+                redisService.delete(Const.VERIFY_CODE);
+            }
+        }
+        if(!flag) {
+            return ResponseEntityUtil.fail("验证码错误");
+        }
+
+        ResponseEntity<Admin> response = adminService.loginParkAdmin(bean.getPhone(), bean.getLoginPwd());
         if (response.isSuccess()) {
             Admin admin = response.getData();
             //session.setAttribute(Const.CURRENT_USER, response.getData());

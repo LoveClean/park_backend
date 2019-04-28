@@ -11,6 +11,8 @@ public interface AdminService {
 
     ResponseEntity<Admin> login(String phone, String password);
 
+    ResponseEntity<Admin> loginParkAdmin(String phone, String password);
+
     ResponseEntity<Admin> selectByPrimaryKey(Integer id);
 
     PageResponseBean selectList(Integer pageNum, Integer pageSize);
