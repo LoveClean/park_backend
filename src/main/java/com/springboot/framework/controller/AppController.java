@@ -77,7 +77,7 @@ public class AppController extends BaseController {
         App record = new App(bean.getName(), bean.getIcon(), bean.getSort(), null);
         record.setId(bean.getAppId());
         record.setUpdateBy(super.getSessionUser(request).getName());
-        return appService.updateByPrimaryKeySelective(record);
+        return appService.updateByPrimaryKeySelective(record, bean.getParkIds2(), bean.getParkIds3());
     }
 
     @ApiOperation(value = "更新状态", notes = "更新查看应用状态")

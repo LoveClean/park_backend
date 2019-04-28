@@ -65,7 +65,7 @@ public class ParkController extends BaseController {
         Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getSort(), null);
         record.setId(bean.getId());
         record.setUpdateBy(super.getSessionUser(request).getName());
-        return parkService.updateByPrimaryKeySelective(record);
+        return parkService.updateByPrimaryKeySelective(record, bean.getAppIds2(), bean.getAppIds3());
     }
 
     @ApiOperation(value = "更新状态", notes = "更新查看应用状态")

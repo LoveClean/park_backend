@@ -15,7 +15,7 @@ public interface ParkService {
 
     PageResponseBean selectListByAppId(Integer pageNum, Integer pageSize, Integer appId);
 
-    ResponseEntity<Integer> updateByPrimaryKeySelective(Park record);
+    ResponseEntity<Integer> updateByPrimaryKeySelective(Park record, Integer[] appIds2, Integer[] appIds3);
 
     ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy);
 }
