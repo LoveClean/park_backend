@@ -45,7 +45,7 @@ public class HouseUpdateRequestBean {
 
     private BigDecimal propertyFee;
 
-    private String label;
+//    private String label;
 
     private String introduction;
 

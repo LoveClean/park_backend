@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.framework.dao.mapper.HouseMapper">
+  <resultMap id="BaseResultMap" type="com.springboot.framework.dao.entity.House">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="park_id" jdbcType="INTEGER" property="parkId" />
+    <result column="cover" jdbcType="VARCHAR" property="cover" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="acreage" jdbcType="INTEGER" property="acreage" />
+    <result column="floor" jdbcType="INTEGER" property="floor" />
+    <result column="orientation" jdbcType="TINYINT" property="orientation" />
+    <result column="finish" jdbcType="TINYINT" property="finish" />
+    <result column="elevator" jdbcType="TINYINT" property="elevator" />
+    <result column="tenancy_term" jdbcType="TINYINT" property="tenancyTerm" />
+    <result column="registered_company" jdbcType="TINYINT" property="registeredCompany" />
+    <result column="usage_rate" jdbcType="DECIMAL" property="usageRate" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
+    <result column="cash_pledge" jdbcType="DECIMAL" property="cashPledge" />
+    <result column="property_fee" jdbcType="DECIMAL" property="propertyFee" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, park_id, cover, contact, location, acreage, floor, orientation, finish, elevator, 
+    tenancy_term, registered_company, usage_rate, unit_price, price, service_charge, 
+    cash_pledge, property_fee, label, introduction, remark, create_by, create_date, update_by, 
+    update_date, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_house
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_house
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.springboot.framework.dao.entity.House">
+    insert into tb_house (id, park_id, cover, 
+      contact, location, acreage, 
+      floor, orientation, finish, 
+      elevator, tenancy_term, registered_company, 
+      usage_rate, unit_price, price, 
+      service_charge, cash_pledge, property_fee, 
+      label, introduction, remark, 
+      create_by, create_date, update_by, 
+      update_date, status)
+    values (#{id,jdbcType=INTEGER}, #{parkId,jdbcType=INTEGER}, #{cover,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{acreage,jdbcType=INTEGER}, 
+      #{floor,jdbcType=INTEGER}, #{orientation,jdbcType=TINYINT}, #{finish,jdbcType=TINYINT}, 
+      #{elevator,jdbcType=TINYINT}, #{tenancyTerm,jdbcType=TINYINT}, #{registeredCompany,jdbcType=TINYINT}, 
+      #{usageRate,jdbcType=DECIMAL}, #{unitPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{serviceCharge,jdbcType=DECIMAL}, #{cashPledge,jdbcType=DECIMAL}, #{propertyFee,jdbcType=DECIMAL}, 
+      #{label,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springboot.framework.dao.entity.House" useGeneratedKeys="true"  keyProperty="id">
+    insert into tb_house
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parkId != null">
+        park_id,
+      </if>
+      <if test="cover != null">
+        cover,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="location != null">
+        location,
+      </if>
+      <if test="acreage != null">
+        acreage,
+      </if>
+      <if test="floor != null">
+        floor,
+      </if>
+      <if test="orientation != null">
+        orientation,
+      </if>
+      <if test="finish != null">
+        finish,
+      </if>
+      <if test="elevator != null">
+        elevator,
+      </if>
+      <if test="tenancyTerm != null">
+        tenancy_term,
+      </if>
+      <if test="registeredCompany != null">
+        registered_company,
+      </if>
+      <if test="usageRate != null">
+        usage_rate,
+      </if>
+      <if test="unitPrice != null">
+        unit_price,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="serviceCharge != null">
+        service_charge,
+      </if>
+      <if test="cashPledge != null">
+        cash_pledge,
+      </if>
+      <if test="propertyFee != null">
+        property_fee,
+      </if>
+      <if test="label != null">
+        label,
+      </if>
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parkId != null">
+        #{parkId,jdbcType=INTEGER},
+      </if>
+      <if test="cover != null">
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="acreage != null">
+        #{acreage,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null">
+        #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="orientation != null">
+        #{orientation,jdbcType=TINYINT},
+      </if>
+      <if test="finish != null">
+        #{finish,jdbcType=TINYINT},
+      </if>
+      <if test="elevator != null">
+        #{elevator,jdbcType=TINYINT},
+      </if>
+      <if test="tenancyTerm != null">
+        #{tenancyTerm,jdbcType=TINYINT},
+      </if>
+      <if test="registeredCompany != null">
+        #{registeredCompany,jdbcType=TINYINT},
+      </if>
+      <if test="usageRate != null">
+        #{usageRate,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPrice != null">
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceCharge != null">
+        #{serviceCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="cashPledge != null">
+        #{cashPledge,jdbcType=DECIMAL},
+      </if>
+      <if test="propertyFee != null">
+        #{propertyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="label != null">
+        #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springboot.framework.dao.entity.House">
+    update tb_house
+    <set>
+      <if test="parkId != null">
+        park_id = #{parkId,jdbcType=INTEGER},
+      </if>
+      <if test="cover != null">
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="acreage != null">
+        acreage = #{acreage,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null">
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="orientation != null">
+        orientation = #{orientation,jdbcType=TINYINT},
+      </if>
+      <if test="finish != null">
+        finish = #{finish,jdbcType=TINYINT},
+      </if>
+      <if test="elevator != null">
+        elevator = #{elevator,jdbcType=TINYINT},
+      </if>
+      <if test="tenancyTerm != null">
+        tenancy_term = #{tenancyTerm,jdbcType=TINYINT},
+      </if>
+      <if test="registeredCompany != null">
+        registered_company = #{registeredCompany,jdbcType=TINYINT},
+      </if>
+      <if test="usageRate != null">
+        usage_rate = #{usageRate,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPrice != null">
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceCharge != null">
+        service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="cashPledge != null">
+        cash_pledge = #{cashPledge,jdbcType=DECIMAL},
+      </if>
+      <if test="propertyFee != null">
+        property_fee = #{propertyFee,jdbcType=DECIMAL},
+      </if>
+      <if test="label != null">
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springboot.framework.dao.entity.House">
+    update tb_house
+    set park_id = #{parkId,jdbcType=INTEGER},
+      cover = #{cover,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      acreage = #{acreage,jdbcType=INTEGER},
+      floor = #{floor,jdbcType=INTEGER},
+      orientation = #{orientation,jdbcType=TINYINT},
+      finish = #{finish,jdbcType=TINYINT},
+      elevator = #{elevator,jdbcType=TINYINT},
+      tenancy_term = #{tenancyTerm,jdbcType=TINYINT},
+      registered_company = #{registeredCompany,jdbcType=TINYINT},
+      usage_rate = #{usageRate,jdbcType=DECIMAL},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      cash_pledge = #{cashPledge,jdbcType=DECIMAL},
+      property_fee = #{propertyFee,jdbcType=DECIMAL},
+      label = #{label,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
