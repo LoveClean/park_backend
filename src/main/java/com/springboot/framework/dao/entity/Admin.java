@@ -27,6 +27,8 @@ public class Admin implements Serializable {
 
     private Byte status;
 
+    private Integer parkId;
+
     public Admin() {
     }
 
@@ -124,5 +126,13 @@ public class Admin implements Serializable {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public Integer getParkId() {
+        return parkId;
+    }
+
+    public void setParkId(Integer parkId) {
+        this.parkId = parkId;
     }
 }

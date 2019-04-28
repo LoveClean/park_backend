@@ -34,10 +34,17 @@ public class ParkController extends BaseController {
         return parkService.insertSelective(record, bean.getAppIds());
     }
 
-    @ApiOperation(value = "查看", notes = "查看应用")
+    @ApiOperation(value = "查看", notes = "查看园区")
     @GetMapping(value = "selectByPrimaryKey")
     public ResponseEntity<Park> selectByPrimaryKey(@RequestParam Integer id) {
         return parkService.selectByPrimaryKey(id);
+    }
+
+    @ApiOperation(value = "查看", notes = "查看园区")
+    @GetMapping(value = "selectPark")
+    public ResponseEntity<Park> selectPark(HttpServletRequest request) {
+        Integer parkId=super.getSessionUser(request).getParkId();
+        return parkService.selectByPrimaryKey(parkId);
     }
 
     @ApiOperation(value = "查看列表", notes = "查看应用列表")

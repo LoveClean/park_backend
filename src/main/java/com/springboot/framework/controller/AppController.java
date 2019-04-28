@@ -57,6 +57,14 @@ public class AppController extends BaseController {
         return appService.selectListByParkId(pageNum, pageSize, parkId);
     }
 
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "查看自己园区下的应用列表", notes = "查看自己园区下的应用列表")
+    @GetMapping(value = "selectAppListB")
+    public PageResponseBean selectList(@RequestParam Integer pageNum, @RequestParam Integer pageSize, HttpServletRequest request) {
+        Integer parkId = super.getSessionUser(request).getParkId();
+        return appService.selectListByParkId(pageNum, pageSize, parkId);
+    }
+
     @ApiOperation(value = "查看大图列表", notes = "查看轮播图列表")
     @GetMapping(value = "selectListIcon")
     public ResponseEntity<List<App>> selectListIcon() {

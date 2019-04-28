@@ -3,6 +3,7 @@ package com.springboot.framework.interceptor;
 import com.springboot.framework.contants.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -42,12 +43,17 @@ public class CrossDomainFilter extends OncePerRequestFilter {
 	      response.addHeader("Access-Control-Allow-Headers",
 	          "X-Requested-With, X-Access-Token, "+ Const.ACCESS_TOKEN_HEADER_NAME+
 	          ", X-Upload-Auth-Token, Origin, Content-Type, Cookie,"+Const.REQUEST_SIDE_HEAD_NAME);
+	      response.setHeader("Access-Control-Max-Age", "3600");
 	    }
-	    if(request.getMethod().equals("OPTIONS")){
-	    	return ;
-	    }else{
-	    	filterChain.doFilter(request, response);
-	    }
+
+		  // 浏览器是会先发一次options请求，如果请求通过，则继续发送正式的post请求
+		  // 如果是option请求，直接返回200
+		  if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+			  response.setStatus(HttpServletResponse.SC_OK);
+			  return;
+		  }
+		  // 传递业务请求处理
+		  filterChain.doFilter(request, response);
 	  }
 
 	  public void setAllowCrossDomain(boolean allowCrossDomain) {
