@@ -1,5 +1,6 @@
 package com.springboot.framework.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.controller.request.*;
 import com.springboot.framework.controller.response.PageResponseBean;
@@ -7,9 +8,12 @@ import com.springboot.framework.dao.entity.App;
 import com.springboot.framework.dao.entity.AppDetail;
 import com.springboot.framework.service.AppService;
 import com.springboot.framework.util.ResponseEntity;
+import com.springboot.framework.util.ResponseEntityUtil;
 import com.springboot.framework.vo.AppDetailVO;
+import com.springboot.framework.vo.ParkAppInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -86,11 +90,11 @@ public class AppController extends BaseController {
         return appService.updateStatus(bean.getId(), bean.getStatus(), super.getSessionUser(request).getName());
     }
 
-    /////////////////应用详情/////////////////
+    /////////////////园区-应用/////////////////
     @ACS(allowAnonymous = true)
     @ApiOperation(value = "查看应用详情", notes = "查看应用详情")
     @GetMapping(value = "selectByPrimaryKeyForDetail")
-    public ResponseEntity<AppDetail> selectByPrimaryKeyForDetail(@RequestParam Integer appId, @RequestParam Integer parkId) {
+    public ResponseEntity<Object> selectByPrimaryKeyForDetail(@RequestParam Integer appId, @RequestParam Integer parkId) {
         return appService.selectByPrimaryKeyForDetail(appId, parkId);
     }
 
@@ -98,6 +102,35 @@ public class AppController extends BaseController {
     @PutMapping(value = "updateByPrimaryKeySelectiveForDetail")
     public ResponseEntity<Integer> updateByPrimaryKeySelectiveForDetail(@RequestBody AppDetailUpdateSelective bean, HttpServletRequest request) {
         AppDetail record = new AppDetail(bean.getId(), bean.getCover(), bean.getAddress(), bean.getPrice(), bean.getModel(), bean.getColor(), bean.getContact(), bean.getDescription(), bean.getIntroduction(), bean.getStatus(), bean.getContent());
+        return appService.updateByPrimaryKeySelectiveForDetail(record);
+    }
+
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "查看应用详情改", notes = "查看应用详情")
+    @GetMapping(value = "selectParkAppInfo")
+    public ResponseEntity<Object> selectParkAppInfo(@RequestParam Integer appId, @RequestParam Integer parkId) {
+        ResponseEntity<Object> response = appService.selectByPrimaryKeyForDetail(appId, parkId);
+        if(response.isSuccess()){
+            AppDetail appDetail = (AppDetail) response.getData();
+            ParkAppInfoVo parkAppInfoVo = new ParkAppInfoVo();
+
+            BeanUtils.copyProperties(appDetail,parkAppInfoVo);
+            try {
+                List contactList = JSON.parseArray(appDetail.getContact());
+                parkAppInfoVo.setContact(contactList);
+            }catch (Exception e){
+
+            }
+            return ResponseEntityUtil.success(parkAppInfoVo);
+        }
+        return response;
+    }
+
+    @ApiOperation(value = "更新应用详情改", notes = "更新应用详情")
+    @PutMapping(value = "updateParkAppInfo")
+    public ResponseEntity<Integer> updateParkAppInfo(@RequestBody ParkAppUpdateRequestBean bean, HttpServletRequest request) {
+        String contact=JSON.toJSONString(bean.getContact());
+        AppDetail record = new AppDetail(bean.getId(), bean.getCover(), bean.getAddress(), bean.getPrice(), bean.getModel(), bean.getColor(), contact, bean.getDescription(), bean.getIntroduction(), bean.getStatus(), bean.getContent());
         return appService.updateByPrimaryKeySelectiveForDetail(record);
     }
 }

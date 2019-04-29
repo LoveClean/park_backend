@@ -68,4 +68,13 @@
       house_id = #{houseId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <delete id="batchDeleteByImgUrl" parameterType="java.util.List">
+    delete from tb_house_picture
+    WHERE picture IN
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 </mapper>

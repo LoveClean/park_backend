@@ -26,10 +26,10 @@ public class HouseAppServiceImpl {
     @Resource
     private HousePictureMapper housePictureMapper;
 
-    public PageResponseBean selectListByParkId(int pageNum , int pageSize , Integer parkId){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageResponseBean selectListByParkId(int pageNum, int pageSize, Integer parkId) {
+        PageHelper.startPage(pageNum, pageSize);
         List<House> houseList = houseMapper.selectListByParkId(parkId);
-        PageInfo pageInfo =new PageInfo(houseList);
+        PageInfo pageInfo = new PageInfo(houseList);
 
         PageResponseBean bean = new PageResponseBean(pageInfo);
         bean.setCode(0);
@@ -37,18 +37,18 @@ public class HouseAppServiceImpl {
         return bean;
     }
 
-    public ResponseEntity<Object> deleteByHouseId(int houseId){
-        if(houseMapper.deleteByHouseId(houseId) == 0){
+    public ResponseEntity<Object> deleteByHouseId(int houseId) {
+        if (houseMapper.deleteByHouseId(houseId) == 0) {
             return ResponseEntityUtil.fail("房源删除失败");
         }
         return ResponseEntityUtil.success();
     }
 
-    public ResponseEntity<Object> insert(House house , List<String> imgs){
-        if( houseMapper.insertSelective(house) == 0){
+    public ResponseEntity<Object> insert(House house, List<String> imgs) {
+        if (houseMapper.insertSelective(house) == 0) {
             return ResponseEntityUtil.fail("房源新增失败");
         }
-        for (String img : imgs){
+        for (String img : imgs) {
             HousePicture housePicture = new HousePicture();
             housePicture.setHouseId(house.getId());
             housePicture.setPicture(img);
@@ -57,20 +57,27 @@ public class HouseAppServiceImpl {
         return ResponseEntityUtil.success();
     }
 
-    public ResponseEntity<Object> update(House house , List<String> imgs){
-        if( houseMapper.updateByPrimaryKeySelective(house) == 0){
+    public ResponseEntity<Object> update(House house, List<String> newImg, List<String> delImg) {
+        if (houseMapper.updateByPrimaryKeySelective(house) == 0) {
             return ResponseEntityUtil.fail("房源修改失败");
         }
-//        for (String img : imgs){
-//            HousePicture housePicture = new HousePicture();
-//            housePicture.setHouseId(house.getId());
-//            housePicture.setPicture(img);
-//            housePictureMapper.insertSelective(housePicture);
-//        }
+        // 新增图片
+        if (newImg.size() > 0) {
+            for (String img : newImg) {
+                HousePicture housePicture = new HousePicture();
+                housePicture.setHouseId(house.getId());
+                housePicture.setPicture(img);
+                housePictureMapper.insertSelective(housePicture);
+            }
+        }
+        // 删除图片
+        if (delImg.size() > 0) {
+            housePictureMapper.batchDeleteByImgUrl(delImg);
+        }
         return ResponseEntityUtil.success();
     }
 
-    public ResponseEntity<Object> selectImg(Integer houseId){
+    public ResponseEntity<Object> selectImg(Integer houseId) {
         return ResponseEntityUtil.success(housePictureMapper.selectListByHouseId(houseId));
     }
 }

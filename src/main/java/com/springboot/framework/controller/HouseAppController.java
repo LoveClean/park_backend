@@ -68,6 +68,6 @@ public class HouseAppController extends BaseController {
         House house = new House();
         BeanUtils.copyProperties(bean, house);
         house.setUpdateBy(super.getSessionUser(request).getName());
-        return houseAppService.update(house, null);
+        return houseAppService.update(house, bean.getNewImg(),bean.getDelImg());
     }
 }

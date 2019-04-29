@@ -26,7 +26,7 @@ public interface AppService {
     ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy);
 
     /////////////////应用详情/////////////////
-    ResponseEntity<AppDetail> selectByPrimaryKeyForDetail(Integer appId, Integer parkId);
+    ResponseEntity<Object> selectByPrimaryKeyForDetail(Integer appId, Integer parkId);
 
     ResponseEntity<Integer> updateByPrimaryKeySelectiveForDetail(AppDetail record);
 }
