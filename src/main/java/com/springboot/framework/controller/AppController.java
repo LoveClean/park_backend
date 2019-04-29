@@ -10,7 +10,7 @@ import com.springboot.framework.service.AppService;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
 import com.springboot.framework.vo.AppDetailVO;
-import com.springboot.framework.vo.ParkAppInfoVo;
+import com.springboot.framework.vo.ParkAppInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -112,7 +112,7 @@ public class AppController extends BaseController {
         ResponseEntity<Object> response = appService.selectByPrimaryKeyForDetail(appId, parkId);
         if(response.isSuccess()){
             AppDetail appDetail = (AppDetail) response.getData();
-            ParkAppInfoVo parkAppInfoVo = new ParkAppInfoVo();
+            ParkAppInfoVO parkAppInfoVo = new ParkAppInfoVO();
 
             BeanUtils.copyProperties(appDetail,parkAppInfoVo);
             try {
