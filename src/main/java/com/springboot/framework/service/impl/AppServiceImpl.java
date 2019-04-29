@@ -139,7 +139,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResponseEntity<AppDetail> selectByPrimaryKeyForDetail(Integer appId, Integer parkId) {
+    public ResponseEntity<Object> selectByPrimaryKeyForDetail(Integer appId, Integer parkId) {
         return ResponseEntityUtil.success(appDetailMapper.selectByAppIdAndParkId(appId, parkId));
     }
 

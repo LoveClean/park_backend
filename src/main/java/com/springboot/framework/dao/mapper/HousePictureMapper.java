@@ -21,4 +21,6 @@ public interface HousePictureMapper {
 
     @Select("select * from tb_house_picture where house_id = #{houseId}")
     List<HousePicture> selectListByHouseId(@Param("houseId") Integer houseId);
+
+    int batchDeleteByImgUrl(@Param("list") List<String> list);
 }

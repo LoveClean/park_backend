@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author SWF
@@ -50,5 +51,9 @@ public class HouseUpdateRequestBean {
     private String introduction;
 
     private String remark;
+
+    private List<String> newImg;
+
+    private List<String> delImg;
 
 }
