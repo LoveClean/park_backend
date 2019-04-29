@@ -41,6 +41,19 @@ public class CommonController {
     private RedisService redisService;
 
     /**
+     * IP定位
+     */
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "IP定位", notes = "通过终端设备IP地址获取其当前所在地理位置，精确到市级，常用于显示当地城市天气预报、初始化用户城市等非精确定位场景。")
+    @GetMapping(value = "locationByIp")
+    public JSONObject locationByIp() {
+        String url = "https://apis.map.qq.com/ws/location/v1/ip";
+        String jsonStrToken = ToolsUtil.sendGet(url, "key=" + appConfig.getTencentMapKey());
+        return JSON.parseObject(jsonStrToken);
+    }
+
+
+    /**
      * 根据地址名称获取经纬度
      */
     @ACS(allowAnonymous = true)
