@@ -57,6 +57,7 @@ public class ParkController extends BaseController {
         return parkService.selectByPrimaryKey(parkId);
     }
 
+    @ACS(allowAnonymous = true)
     @ApiOperation(value = "查看列表", notes = "查看应用列表")
     @GetMapping(value = "selectList")
     public PageResponseBean selectList(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
