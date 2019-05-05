@@ -38,8 +38,8 @@ public class ParkController extends BaseController {
     @ACS(allowAnonymous = true)
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
     @PostMapping(value = "insertSelectiveForMember")
-    public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelective bean, HttpServletRequest request) {
-        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getName());
+    public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelective bean) {
+        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客");
         record.setStatus((byte) 0);
         return parkService.insertSelective(record, bean.getAppIds());
     }
