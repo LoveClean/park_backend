@@ -1,5 +1,6 @@
 package com.springboot.framework.controller;
 
+import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.controller.request.ParkInsertSelective;
 import com.springboot.framework.controller.request.ParkUpdateSelective;
 import com.springboot.framework.controller.request.UpdateByStatus;
@@ -21,16 +22,25 @@ public class ParkController extends BaseController {
     @Resource
     private ParkService parkService;
 
-    @ApiOperation(value = "删除", notes = "删除应用")
+    @ApiOperation(value = "删除", notes = "删除园区")
     @DeleteMapping(value = "deleteByPrimaryKey")
     public ResponseEntity<Integer> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
         return parkService.deleteByPrimaryKey(id, super.getSessionUser(request).getName());
     }
 
-    @ApiOperation(value = "新增", notes = "新增应用")
+    @ApiOperation(value = "新增", notes = "新增园区")
     @PostMapping(value = "insertSelective")
     public ResponseEntity<Integer> insertSelective(@RequestBody ParkInsertSelective bean, HttpServletRequest request) {
         Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getName());
+        return parkService.insertSelective(record, bean.getAppIds());
+    }
+
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
+    @PostMapping(value = "insertSelectiveForMember")
+    public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelective bean, HttpServletRequest request) {
+        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getName());
+        record.setStatus((byte) 0);
         return parkService.insertSelective(record, bean.getAppIds());
     }
 
@@ -43,7 +53,7 @@ public class ParkController extends BaseController {
     @ApiOperation(value = "查看", notes = "查看园区")
     @GetMapping(value = "selectPark")
     public ResponseEntity<Park> selectPark(HttpServletRequest request) {
-        Integer parkId=super.getSessionUser(request).getParkId();
+        Integer parkId = super.getSessionUser(request).getParkId();
         return parkService.selectByPrimaryKey(parkId);
     }
 
