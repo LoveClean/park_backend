@@ -33,7 +33,7 @@ public class AdminController extends BaseController {
         return adminService.deleteByPrimaryKey(id, super.getSessionUser(request).getAccount());
     }
 
-    @ApiOperation(value = "新增管理员", notes = "新增管理员")
+    @ApiOperation(value = "新增超级管理员", notes = "新增超级管理员")
     @PostMapping(value = "insertSelective")
     public ResponseEntity<Integer> insertSelective(@RequestBody AdminInsert bean, HttpServletRequest request) {
         Admin record = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount());
@@ -41,10 +41,20 @@ public class AdminController extends BaseController {
     }
 
     @ACS(allowAnonymous = true)
+    @ApiOperation(value = "游客新增园区管理员", notes = "游客新增园区管理员")
+    @PostMapping(value = "insertSelectiveForParkId")
+    public ResponseEntity<Integer> insertSelectiveForParkId(@RequestBody AdminInsertForParkId bean) {
+        Admin record = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), bean.getName());
+        record.setParkId(bean.getParkId());
+        record.setStatus((byte) 0);
+        return adminService.insertSelective(record);
+    }
+
+    @ACS(allowAnonymous = true)
     @ApiOperation(value = "登陆", notes = "管理员登陆")
     @PostMapping(value = "login")
     public ResponseEntity<Admin> login(@Valid @RequestBody AdminLogin bean, HttpServletRequest request) {
-        Boolean flag=false;
+        Boolean flag = false;
         if (redisService.get(Const.VERIFY_CODE) != null) {
             String randomCode = redisService.get(Const.VERIFY_CODE).toString();
 
@@ -53,7 +63,7 @@ public class AdminController extends BaseController {
                 redisService.delete(Const.VERIFY_CODE);
             }
         }
-        if(!flag) {
+        if (!flag) {
             return ResponseEntityUtil.fail("验证码错误");
         }
 
@@ -77,7 +87,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "园区管理员登陆", notes = "园区管理员登陆")
     @PostMapping(value = "loginPark")
     public ResponseEntity<Admin> loginPark(@Valid @RequestBody AdminLogin bean, HttpServletRequest request) {
-        Boolean flag=false;
+        Boolean flag = false;
         if (redisService.get(Const.VERIFY_CODE) != null) {
             String randomCode = redisService.get(Const.VERIFY_CODE).toString();
 
@@ -86,7 +96,7 @@ public class AdminController extends BaseController {
                 redisService.delete(Const.VERIFY_CODE);
             }
         }
-        if(!flag) {
+        if (!flag) {
             return ResponseEntityUtil.fail("验证码错误");
         }
 

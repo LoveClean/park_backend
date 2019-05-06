@@ -58,6 +58,9 @@ public class AdminServiceImpl implements AdminService {
         if (record.getStatus() == 0) {
             return ResponseEntityUtil.fail(Errors.SYSTEM_NO_ACCESS);
         }
+        if (record.getParkId() != null) {
+            return ResponseEntityUtil.fail(Errors.SYSTEM_NO_ACCESS);
+        }
         return ResponseEntityUtil.success(record);
     }
 
