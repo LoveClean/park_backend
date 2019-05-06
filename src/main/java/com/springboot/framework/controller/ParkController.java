@@ -2,12 +2,16 @@ package com.springboot.framework.controller;
 
 import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.controller.request.ParkInsertSelective;
+import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.request.ParkUpdateSelective;
 import com.springboot.framework.controller.request.UpdateByStatus;
 import com.springboot.framework.controller.response.PageResponseBean;
+import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.dao.entity.Park;
+import com.springboot.framework.service.AdminService;
 import com.springboot.framework.service.ParkService;
 import com.springboot.framework.util.ResponseEntity;
+import com.springboot.framework.util.ResponseEntityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 public class ParkController extends BaseController {
     @Resource
     private ParkService parkService;
+    @Resource
+    private AdminService adminService;
 
     @ApiOperation(value = "删除", notes = "删除园区")
     @DeleteMapping(value = "deleteByPrimaryKey")
@@ -38,10 +44,16 @@ public class ParkController extends BaseController {
     @ACS(allowAnonymous = true)
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
     @PostMapping(value = "insertSelectiveForMember")
-    public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelective bean) {
-        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客");
-        record.setStatus((byte) 0);
-        return parkService.insertSelective(record, bean.getAppIds());
+    public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
+        Park park = new Park(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客");
+        park.setStatus((byte) 0);
+        parkService.insertSelective(park, bean.getAppIds());
+
+        Admin admin = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客");
+        admin.setParkId(park.getId());
+        admin.setStatus((byte) 0);
+        adminService.insertSelective(admin);
+        return ResponseEntityUtil.success(1);
     }
 
     @ApiOperation(value = "查看", notes = "查看园区")

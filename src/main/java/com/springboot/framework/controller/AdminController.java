@@ -40,13 +40,12 @@ public class AdminController extends BaseController {
         return adminService.insertSelective(record);
     }
 
-    @ACS(allowAnonymous = true)
-    @ApiOperation(value = "游客新增园区管理员", notes = "游客新增园区管理员")
+    @ApiOperation(value = "新增园区管理员", notes = "新增园区管理员")
     @PostMapping(value = "insertSelectiveForParkId")
-    public ResponseEntity<Integer> insertSelectiveForParkId(@RequestBody AdminInsertForParkId bean) {
-        Admin record = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), bean.getName());
+    public ResponseEntity<Integer> insertSelectiveForParkId(@RequestBody AdminInsertForParkId bean, HttpServletRequest request) {
+        Admin record = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount());
         record.setParkId(bean.getParkId());
-        record.setStatus((byte) 0);
+//        record.setStatus((byte) 0);
         return adminService.insertSelective(record);
     }
 

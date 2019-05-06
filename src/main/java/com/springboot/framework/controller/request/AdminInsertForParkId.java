@@ -2,13 +2,9 @@ package com.springboot.framework.controller.request;
 
 public class AdminInsertForParkId {
     private String account;
-
     private String password;
-
     private String phone;
-
     private String name;
-
     private Integer parkId;
 
     public String getAccount() {
