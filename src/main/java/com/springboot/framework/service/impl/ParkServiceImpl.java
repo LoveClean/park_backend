@@ -97,7 +97,7 @@ public class ParkServiceImpl implements ParkService {
         admin.setPassword(MD5Util.MD5(admin.getPassword()));
         int resultCount = adminMapper.insertSelective(admin);
         if (resultCount == 0) {
-            return ResponseEntityUtil.fail("添加管理员失败");
+            return ResponseEntityUtil.fail("管理员申请失败");
         }
         return ResponseEntityUtil.success();
     }
