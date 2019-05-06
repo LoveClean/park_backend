@@ -1,6 +1,8 @@
 package com.springboot.framework.service;
 
+import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.response.PageResponseBean;
+import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.dao.entity.Park;
 import com.springboot.framework.util.ResponseEntity;
 
@@ -8,6 +10,8 @@ public interface ParkService {
     ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy);
 
     ResponseEntity<Integer> insertSelective(Park record, Integer[] appIds);
+
+    ResponseEntity<Integer> insertSelectiveForMember(ParkInsertSelectiveForMember bean);
 
     ResponseEntity<Park> selectByPrimaryKey(Integer id);
 

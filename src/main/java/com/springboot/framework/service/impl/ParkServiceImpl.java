@@ -3,15 +3,10 @@ package com.springboot.framework.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.response.PageResponseBean;
-import com.springboot.framework.dao.entity.AppDetail;
-import com.springboot.framework.dao.entity.Area;
-import com.springboot.framework.dao.entity.Connection;
-import com.springboot.framework.dao.entity.Park;
-import com.springboot.framework.dao.mapper.AppDetailMapper;
-import com.springboot.framework.dao.mapper.AreaMapper;
-import com.springboot.framework.dao.mapper.ConnectionMapper;
-import com.springboot.framework.dao.mapper.ParkMapper;
+import com.springboot.framework.dao.entity.*;
+import com.springboot.framework.dao.mapper.*;
 import com.springboot.framework.service.ParkService;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
@@ -31,6 +26,8 @@ public class ParkServiceImpl implements ParkService {
     private ConnectionMapper connectionMapper;
     @Resource
     private AppDetailMapper appDetailMapper;
+    @Resource
+    private AdminMapper adminMapper;
 
     @Override
     public ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy) {
@@ -58,6 +55,35 @@ public class ParkServiceImpl implements ParkService {
             appDetail.setParkId(parkId);
             appDetailMapper.insertSelective(appDetail);
         }
+        return ResponseEntityUtil.success();
+    }
+
+    @Override
+    public ResponseEntity<Integer> insertSelectiveForMember(ParkInsertSelectiveForMember bean) {
+        Park park = new Park(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客");
+        park.setStatus((byte) 0);
+        if (parkMapper.selectByName(park.getName()) != null) {
+            return ResponseEntityUtil.fail("此园区已申请注册");
+        }
+        if (parkMapper.insertSelective(park) != 1) {
+            return ResponseEntityUtil.fail("园区添加失败");
+        }
+        Integer parkId = park.getId();
+        for (Integer appId : bean.getAppIds()) {
+            Connection connection = new Connection();
+            connection.setAppId(appId);
+            connection.setParkId(parkId);
+            connectionMapper.insertSelective(connection);
+            AppDetail appDetail = new AppDetail();
+            appDetail.setAppId(appId);
+            appDetail.setParkId(parkId);
+            appDetailMapper.insertSelective(appDetail);
+        }
+
+        Admin admin = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客");
+        admin.setParkId(parkId);
+        admin.setStatus((byte) 0);
+        adminMapper.insertSelective(admin);
         return ResponseEntityUtil.success();
     }
 
