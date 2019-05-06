@@ -86,7 +86,7 @@ public class ParkServiceImpl implements ParkService {
         admin.setParkId(parkId);
         admin.setStatus((byte) 0);
         //校验
-        Admin validResponse = adminMapper.selectByPhone(admin.getPhone());
+//        Admin validResponse = adminMapper.selectByPhone(admin.getPhone());
         if (adminMapper.selectByPhone(admin.getPhone()) != null) {
             return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
         }

@@ -26,7 +26,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity<Integer> insertSelective(Admin record) {
         //校验
-        Admin validResponse = adminMapper.selectByPhone(record.getPhone());
+//        Admin validResponse = adminMapper.selectByPhone(record.getPhone());
         if (adminMapper.selectByPhone(record.getPhone()) != null) {
             return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
         }
