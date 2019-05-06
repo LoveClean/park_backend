@@ -51,8 +51,8 @@ spring:
       force: true
   datasource:
     name: datasource
-#    url: jdbc:mysql://122.112.159.26:3306/park?zeroDateTimeBehavior=CONVERT_TO_NULL&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT%2b8
-    url: jdbc:mysql://122.112.225.34:3306/yuanqufuwu?serverTimezone=GMT%2b8
+    url: jdbc:mysql://122.112.159.26:3306/park?zeroDateTimeBehavior=CONVERT_TO_NULL&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT%2b8
+#    url: jdbc:mysql://122.112.225.34:3306/yuanqufuwu?serverTimezone=GMT%2b8
     username: root
     password: "!Q1q1q1q"
     type: com.alibaba.druid.pool.DruidDataSource
