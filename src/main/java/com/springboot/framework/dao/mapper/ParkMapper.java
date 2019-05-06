@@ -17,6 +17,9 @@ public interface ParkMapper {
 
     Park selectByPrimaryKey(Integer id);
 
+    @Select("SELECT * FROM tb_park WHERE status != -1 AND name = #{name}")
+    Park selectByName(@Param("name") String name);
+
     @Select("SELECT * FROM tb_park WHERE status != -1 ORDER BY create_date DESC")
     List<Park> selectList();
 

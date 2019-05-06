@@ -41,6 +41,9 @@ public class ParkServiceImpl implements ParkService {
 
     @Override
     public ResponseEntity<Integer> insertSelective(Park record, Integer[] appIds) {
+        if (parkMapper.selectByName(record.getName()) != null) {
+            return ResponseEntityUtil.fail("此园区已申请注册");
+        }
         if (parkMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
