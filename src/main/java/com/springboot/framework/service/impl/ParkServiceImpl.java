@@ -3,11 +3,13 @@ package com.springboot.framework.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.*;
 import com.springboot.framework.dao.mapper.*;
 import com.springboot.framework.service.ParkService;
+import com.springboot.framework.util.MD5Util;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
 import com.springboot.framework.vo.ParkVO;
@@ -83,7 +85,20 @@ public class ParkServiceImpl implements ParkService {
         Admin admin = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客");
         admin.setParkId(parkId);
         admin.setStatus((byte) 0);
-        adminMapper.insertSelective(admin);
+        //校验
+        Admin validResponse = adminMapper.selectByPhone(admin.getPhone());
+        if (adminMapper.selectByPhone(admin.getPhone()) != null) {
+            return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
+        }
+        if (adminMapper.selectByAccount(admin.getAccount()) != null) {
+            return ResponseEntityUtil.fail("此用户名已被注册");
+        }
+        //密码通过MD5加密
+        admin.setPassword(MD5Util.MD5(admin.getPassword()));
+        int resultCount = adminMapper.insertSelective(admin);
+        if (resultCount == 0) {
+            return ResponseEntityUtil.fail("添加管理员失败");
+        }
         return ResponseEntityUtil.success();
     }
 
