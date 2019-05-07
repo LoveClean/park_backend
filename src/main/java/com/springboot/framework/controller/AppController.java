@@ -2,6 +2,7 @@ package com.springboot.framework.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.springboot.framework.annotation.ACS;
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.controller.request.*;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;
@@ -38,8 +39,8 @@ public class AppController extends BaseController {
     @ApiOperation(value = "新增", notes = "新增应用")
     @PostMapping(value = "insertSelective")
     public ResponseEntity<Integer> insertSelective(@RequestBody AppInsertSelective bean, HttpServletRequest request) {
-        App record = new App(bean.getName(), bean.getIcon(), bean.getSort(), super.getSessionUser(request).getName());
-        return appService.insertSelective(record, bean.getParkIds());
+        AppDTO recordDTO = new AppDTO(bean.getName(), bean.getIcon(), bean.getSort(), super.getSessionUser(request).getName(), bean.getParkIds());
+        return appService.insertSelective(recordDTO);
     }
 
     @ACS(allowAnonymous = true)
@@ -80,16 +81,15 @@ public class AppController extends BaseController {
     @ApiOperation(value = "更新", notes = "更新应用")
     @PutMapping(value = "updateByPrimaryKeySelective")
     public ResponseEntity<Integer> updateByPrimaryKeySelective(@RequestBody AppUpdateSelective bean, HttpServletRequest request) {
-        App record = new App(bean.getName(), bean.getIcon(), bean.getSort(), null);
-        record.setId(bean.getAppId());
-        record.setUpdateBy(super.getSessionUser(request).getName());
-        return appService.updateByPrimaryKeySelective(record, bean.getParkIds2(), bean.getParkIds3());
+        AppDTO recordDTO = new AppDTO(bean.getAppId(), bean.getName(), bean.getIcon(), bean.getSort(), super.getSessionUser(request).getName(), bean.getParkIds2(), bean.getParkIds3());
+        return appService.updateByPrimaryKeySelective(recordDTO);
     }
 
     @ApiOperation(value = "更新状态", notes = "更新查看应用状态")
     @PutMapping(value = "updateStatus")
-    public ResponseEntity<Integer> updateStatus(@RequestBody UpdateByStatus bean, HttpServletRequest request) {
-        return appService.updateStatus(bean.getId(), bean.getStatus(), super.getSessionUser(request).getName());
+    public ResponseEntity<Errors> updateStatus(@RequestBody UpdateByStatus bean, HttpServletRequest request) {
+        AppDTO recordDTO = new AppDTO(bean.getId(), super.getSessionUser(request).getAccount(), bean.getStatus());
+        return appService.updateStatus(recordDTO);
     }
 
     /////////////////园区-应用/////////////////
@@ -112,15 +112,15 @@ public class AppController extends BaseController {
     @GetMapping(value = "selectParkAppInfo")
     public ResponseEntity<Object> selectParkAppInfo(@RequestParam Integer appId, @RequestParam Integer parkId) {
         ResponseEntity<Object> response = appService.selectByPrimaryKeyForDetail(appId, parkId);
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             AppDetail appDetail = (AppDetail) response.getData();
             ParkAppInfoVO parkAppInfoVo = new ParkAppInfoVO();
 
-            BeanUtils.copyProperties(appDetail,parkAppInfoVo);
+            BeanUtils.copyProperties(appDetail, parkAppInfoVo);
             try {
                 List contactList = JSON.parseArray(appDetail.getContact());
                 parkAppInfoVo.setContact(contactList);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             return ResponseEntityUtil.success(parkAppInfoVo);
@@ -131,7 +131,7 @@ public class AppController extends BaseController {
     @ApiOperation(value = "更新应用详情改", notes = "更新应用详情")
     @PutMapping(value = "updateParkAppInfo")
     public ResponseEntity<Integer> updateParkAppInfo(@RequestBody ParkAppUpdateRequestBean bean, HttpServletRequest request) {
-        String contact=JSON.toJSONString(bean.getContact());
+        String contact = JSON.toJSONString(bean.getContact());
         AppDetail record = new AppDetail(bean.getId(), bean.getCover(), bean.getAddress(), bean.getPrice(), bean.getModel(), bean.getColor(), contact, bean.getDescription(), bean.getIntroduction(), bean.getStatus(), bean.getContent());
         return appService.updateByPrimaryKeySelectiveForDetail(record);
     }

@@ -61,7 +61,7 @@ public class ParkServiceImpl implements ParkService {
         }
         Integer parkId = record.getId();
         Integer[] appIds = recordDTO.getAppIds();
-        if (appIds.length != 0) {
+        if (appIds.length > 0) {
             connectionForPark(parkId, appIds);
         }
         return ResponseEntityUtil.success(Errors.SUCCESS);
@@ -141,11 +141,11 @@ public class ParkServiceImpl implements ParkService {
         }
         Integer parkId = recordDTO.getId();
         Integer[] appIds = recordDTO.getAppIds2();
-        if (appIds.length != 0) {
+        if (appIds.length > 0) {
             connectionForPark(parkId, appIds);
         }
         Integer[] appIds3 = recordDTO.getAppIds3();
-        if (appIds3.length != 0) {
+        if (appIds3.length > 0) {
             for (Integer appId3 : appIds3) {
                 connectionMapper.deleteByParkIdAndAppId(parkId, appId3);
                 appDetailMapper.deleteByParkIdAndAppId(parkId, appId3);

@@ -17,6 +17,9 @@ public class AppDTO {
     private Date updateDate;
     private Byte status;
 
+    private Integer[] parkIds;
+    private Integer[] parkIds3;
+
     public AppDTO() {
     }
 
@@ -24,5 +27,32 @@ public class AppDTO {
     public AppDTO(Integer id, String updateBy) {
         this.id = id;
         this.updateBy = updateBy;
+    }
+
+    //新增
+    public AppDTO(String name, String icon, Byte sort, String createBy, Integer[] parkIds) {
+        this.name = name;
+        this.icon = icon;
+        this.sort = sort;
+        this.createBy = createBy;
+        this.parkIds = parkIds;
+    }
+
+    //更新
+    public AppDTO(Integer id, String name, String icon, Byte sort, String updateBy, Integer[] parkIds, Integer[] parkIds3) {
+        this.id = id;
+        this.name = name;
+        this.icon = icon;
+        this.sort = sort;
+        this.updateBy = updateBy;
+        this.parkIds = parkIds;
+        this.parkIds3 = parkIds3;
+    }
+
+    //更新状态
+    public AppDTO(Integer id, String updateBy, Byte status) {
+        this.id = id;
+        this.updateBy = updateBy;
+        this.status = status;
     }
 }

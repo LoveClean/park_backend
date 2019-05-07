@@ -1,5 +1,7 @@
 package com.springboot.framework.dao.entity;
 
+import com.springboot.framework.dto.AppDTO;
+
 import java.util.Date;
 
 public class App {
@@ -26,11 +28,17 @@ public class App {
     public App() {
     }
 
-    public App(String name, String icon, Byte sort, String createBy) {
-        this.name = name;
-        this.icon = icon;
-        this.sort = sort;
-        this.createBy = createBy;
+    public App(AppDTO appDTO) {
+        this.id = appDTO.getId();
+        this.parkId = appDTO.getParkId();
+        this.name = appDTO.getName();
+        this.icon = appDTO.getIcon();
+        this.sort = appDTO.getSort();
+        this.createBy = appDTO.getCreateBy();
+        this.createDate = appDTO.getCreateDate();
+        this.updateBy = appDTO.getUpdateBy();
+        this.updateDate = appDTO.getUpdateDate();
+        this.status = appDTO.getStatus();
     }
 
     public Integer getId() {

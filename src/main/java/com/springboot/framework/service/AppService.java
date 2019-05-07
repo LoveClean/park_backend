@@ -1,5 +1,6 @@
 package com.springboot.framework.service;
 
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;
 import com.springboot.framework.dao.entity.AppDetail;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface AppService {
     ResponseEntity<Integer> deleteByPrimaryKey(AppDTO recordDTO);
 
-    ResponseEntity<Integer> insertSelective(App record, Integer[] parkIds);
+    ResponseEntity<Integer> insertSelective(AppDTO recordDTO);
 
     ResponseEntity<AppDetailVO> selectByPrimaryKey(Integer id);
 
@@ -22,9 +23,9 @@ public interface AppService {
 
     ResponseEntity<List<App>> selectList();
 
-    ResponseEntity<Integer> updateByPrimaryKeySelective(App record, Integer[] parkIds2, Integer[] parkIds3);
+    ResponseEntity<Integer> updateByPrimaryKeySelective(AppDTO recordDTO);
 
-    ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy);
+    ResponseEntity<Errors> updateStatus(AppDTO recordDTO);
 
     /////////////////应用详情/////////////////
     ResponseEntity<Object> selectByPrimaryKeyForDetail(Integer appId, Integer parkId);

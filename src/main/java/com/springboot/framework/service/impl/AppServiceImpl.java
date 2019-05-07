@@ -3,6 +3,7 @@ package com.springboot.framework.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;
 import com.springboot.framework.dao.entity.AppDetail;
@@ -12,6 +13,7 @@ import com.springboot.framework.dao.mapper.AppMapper;
 import com.springboot.framework.dao.mapper.ConnectionMapper;
 import com.springboot.framework.dto.AppDTO;
 import com.springboot.framework.service.AppService;
+import com.springboot.framework.util.PageUtil;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
 import com.springboot.framework.vo.AppDetailVO;
@@ -37,20 +39,15 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResponseEntity<Integer> insertSelective(App record, Integer[] parkIds) {
+    public ResponseEntity<Integer> insertSelective(AppDTO recordDTO) {
+        App record = new App(recordDTO);
         if (appMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("应用添加失败");
         }
         Integer appId = record.getId();
-        for (Integer parkId : parkIds) {
-            Connection connection = new Connection();
-            connection.setAppId(appId);
-            connection.setParkId(parkId);
-            connectionMapper.insertSelective(connection);
-            AppDetail appDetail = new AppDetail();
-            appDetail.setAppId(appId);
-            appDetail.setParkId(parkId);
-            appDetailMapper.insertSelective(appDetail);
+        Integer[] parkIds = recordDTO.getParkIds();
+        if (parkIds.length > 0) {
+            connectionForApp(appId, parkIds);
         }
         return ResponseEntityUtil.success();
     }
@@ -67,12 +64,7 @@ public class AppServiceImpl implements AppService {
     public PageResponseBean selectList(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<App> appList = appMapper.selectList();
-        PageInfo pageInfo = new PageInfo(appList);
-        pageInfo.setList(appList);
-        PageResponseBean page = new PageResponseBean<App>(pageInfo);
-        page.setCode(0);
-        page.setHttpStatus(200);
-        return page;
+        return PageUtil.page(appList);
     }
 
     @Override
@@ -86,12 +78,7 @@ public class AppServiceImpl implements AppService {
                 appList.add(app);
             }
         }
-        PageInfo pageInfo = new PageInfo(appIdList);
-        pageInfo.setList(appList);
-        PageResponseBean page = new PageResponseBean<App>(pageInfo);
-        page.setCode(0);
-        page.setHttpStatus(200);
-        return page;
+        return PageUtil.page(appIdList, appList);
     }
 
     @Override
@@ -104,24 +91,18 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResponseEntity<Integer> updateByPrimaryKeySelective(App record, Integer[] parkIds2, Integer[] parkIds3) {
+    public ResponseEntity<Integer> updateByPrimaryKeySelective(AppDTO recordDTO) {
+        App record = new App(recordDTO);
         if (appMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("应用更新失败");
         }
         Integer appId = record.getId();
-        if (parkIds2.length != 0) {
-            for (Integer parkId2 : parkIds2) {
-                Connection connection = new Connection();
-                connection.setAppId(appId);
-                connection.setParkId(parkId2);
-                connectionMapper.insertSelective(connection);
-                AppDetail appDetail = new AppDetail();
-                appDetail.setAppId(appId);
-                appDetail.setParkId(parkId2);
-                appDetailMapper.insertSelective(appDetail);
-            }
+        Integer[] parkIds = recordDTO.getParkIds();
+        if (parkIds.length > 0) {
+            connectionForApp(appId, parkIds);
         }
-        if (parkIds3.length != 0) {
+        Integer[] parkIds3 = recordDTO.getParkIds3();
+        if (parkIds3.length > 0) {
             for (Integer parkId3 : parkIds3) {
                 connectionMapper.deleteByParkIdAndAppId(parkId3, appId);
                 appDetailMapper.deleteByParkIdAndAppId(parkId3, appId);
@@ -131,12 +112,14 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy) {
-        App record = new App();
-        record.setId(id);
-        record.setStatus(status);
-        record.setUpdateBy(updateBy);
-        return ResponseEntityUtil.success(appMapper.updateByPrimaryKeySelective(record));
+    public ResponseEntity<Errors> updateStatus(AppDTO recordDTO) {
+        //2.创建entity
+        App record = new App(recordDTO);
+        //3.响应校验
+        if (appMapper.updateByPrimaryKeySelective(record) != 1) {
+            return ResponseEntityUtil.fail("更新失败");
+        }
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
@@ -150,5 +133,18 @@ public class AppServiceImpl implements AppService {
             return ResponseEntityUtil.fail("应用详情更新失败");
         }
         return ResponseEntityUtil.success();
+    }
+
+    private void connectionForApp(Integer appId, Integer[] parkIds) {
+        for (Integer parkId : parkIds) {
+            Connection connection = new Connection();
+            connection.setAppId(appId);
+            connection.setParkId(parkId);
+            connectionMapper.insertSelective(connection);
+            AppDetail appDetail = new AppDetail();
+            appDetail.setAppId(appId);
+            appDetail.setParkId(parkId);
+            appDetailMapper.insertSelective(appDetail);
+        }
     }
 }
