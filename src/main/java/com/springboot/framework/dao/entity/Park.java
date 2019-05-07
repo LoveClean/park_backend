@@ -1,5 +1,7 @@
 package com.springboot.framework.dao.entity;
 
+import com.springboot.framework.dto.ParkDTO;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -35,16 +37,21 @@ public class Park {
     public Park() {
     }
 
-    public Park(String name, String logo, String location, String address, BigDecimal longitude, BigDecimal latitude, String introduction, Byte sort, String createBy) {
-        this.name = name;
-        this.logo = logo;
-        this.location = location;
-        this.address = address;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.introduction = introduction;
-        this.sort = sort;
-        this.createBy = createBy;
+    public Park(ParkDTO parkDTO) {
+        this.id = parkDTO.getId();
+        this.name = parkDTO.getName();
+        this.logo = parkDTO.getLogo();
+        this.location = parkDTO.getLocation();
+        this.address = parkDTO.getAddress();
+        this.longitude = parkDTO.getLongitude();
+        this.latitude = parkDTO.getLatitude();
+        this.introduction = parkDTO.getIntroduction();
+        this.sort = parkDTO.getSort();
+        this.createBy = parkDTO.getCreateBy();
+        this.createDate = parkDTO.getCreateDate();
+        this.updateBy = parkDTO.getUpdateBy();
+        this.updateDate = parkDTO.getUpdateDate();
+        this.status = parkDTO.getStatus();
     }
 
     public Integer getId() {

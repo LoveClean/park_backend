@@ -11,7 +11,6 @@ public class ParkInsertSelectiveForMember {
     private BigDecimal latitude;
     private String introduction;
     private Byte sort;
-    private Integer[] appIds;
 
     private String account;
     private String password;
@@ -80,14 +79,6 @@ public class ParkInsertSelectiveForMember {
 
     public void setSort(Byte sort) {
         this.sort = sort;
-    }
-
-    public Integer[] getAppIds() {
-        return appIds;
-    }
-
-    public void setAppIds(Integer[] appIds) {
-        this.appIds = appIds;
     }
 
     public String getAccount() {

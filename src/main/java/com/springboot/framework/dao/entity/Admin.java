@@ -1,5 +1,7 @@
 package com.springboot.framework.dao.entity;
 
+import com.springboot.framework.dto.AdminDTO;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,12 +34,16 @@ public class Admin implements Serializable {
     public Admin() {
     }
 
-    public Admin(String account, String password, String phone, String name, String createBy) {
-        this.account = account;
-        this.password = password;
-        this.phone = phone;
-        this.name = name;
-        this.createBy = createBy;
+    public Admin(AdminDTO adminDTO) {
+        this.id = adminDTO.getId();
+        this.account = adminDTO.getAccount();
+        this.password = adminDTO.getPassword();
+        this.phone = adminDTO.getPhone();
+        this.name = adminDTO.getName();
+        this.createBy = adminDTO.getCreateBy();
+        this.updateBy = adminDTO.getUpdateBy();
+        this.status = adminDTO.getStatus();
+        this.parkId = adminDTO.getParkId();
     }
 
     public String getAccessToken() {

@@ -8,8 +8,11 @@ import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.*;
 import com.springboot.framework.dao.mapper.*;
+import com.springboot.framework.dto.AdminDTO;
+import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.service.ParkService;
 import com.springboot.framework.util.MD5Util;
+import com.springboot.framework.util.PageUtil;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
 import com.springboot.framework.vo.ParkVO;
@@ -32,37 +35,42 @@ public class ParkServiceImpl implements ParkService {
     private AdminMapper adminMapper;
 
     @Override
-    public ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy) {
-        appDetailMapper.deleteByParkId(id);
-        connectionMapper.deleteByParkId(id);
-        return ResponseEntityUtil.success(parkMapper.deleteByPrimaryKey(id, updateBy));
+    public ResponseEntity<Errors> deleteByPrimaryKey(ParkDTO parkDTO) {
+        appDetailMapper.deleteByParkId(parkDTO.getId());
+        connectionMapper.deleteByParkId(parkDTO.getId());
+        //2.创建entity
+        Park park = new Park(parkDTO);
+        //3.响应校验
+        if (parkMapper.deleteByPrimaryKey(park.getId(), park.getUpdateBy()) == 0) {
+            return ResponseEntityUtil.fail("删除失败");
+        }
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
-    public ResponseEntity<Integer> insertSelective(Park record, Integer[] appIds) {
-        if (parkMapper.selectByName(record.getName()) != null) {
+    public ResponseEntity<Errors> insertSelective(ParkDTO parkDTO) {
+        //1.请求校验
+        if (parkMapper.selectByName(parkDTO.getName()) != null) {
             return ResponseEntityUtil.fail("此园区已申请注册");
         }
-        if (parkMapper.insertSelective(record) != 1) {
+        //2.创建entity
+        Park park = new Park(parkDTO);
+        //3.响应校验
+        if (parkMapper.insertSelective(park) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
-        Integer parkId = record.getId();
-        for (Integer appId : appIds) {
-            Connection connection = new Connection();
-            connection.setAppId(appId);
-            connection.setParkId(parkId);
-            connectionMapper.insertSelective(connection);
-            AppDetail appDetail = new AppDetail();
-            appDetail.setAppId(appId);
-            appDetail.setParkId(parkId);
-            appDetailMapper.insertSelective(appDetail);
+        Integer parkId = park.getId();
+        Integer[] appIds = parkDTO.getAppIds();
+        if (appIds.length != 0) {
+            connectionForPark(parkId, appIds);
         }
-        return ResponseEntityUtil.success();
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
-    public ResponseEntity<Integer> insertSelectiveForMember(ParkInsertSelectiveForMember bean) {
-        Park park = new Park(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客");
+    public ResponseEntity<Errors> insertSelectiveForMember(ParkInsertSelectiveForMember bean) {
+        ParkDTO parkDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
+        Park park = new Park(parkDTO);
         park.setStatus((byte) 0);
         if (parkMapper.selectByName(park.getName()) != null) {
             return ResponseEntityUtil.fail("此园区已申请注册");
@@ -70,23 +78,10 @@ public class ParkServiceImpl implements ParkService {
         if (parkMapper.insertSelective(park) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
-        Integer parkId = park.getId();
-        for (Integer appId : bean.getAppIds()) {
-            Connection connection = new Connection();
-            connection.setAppId(appId);
-            connection.setParkId(parkId);
-            connectionMapper.insertSelective(connection);
-            AppDetail appDetail = new AppDetail();
-            appDetail.setAppId(appId);
-            appDetail.setParkId(parkId);
-            appDetailMapper.insertSelective(appDetail);
-        }
-
-        Admin admin = new Admin(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客");
-        admin.setParkId(parkId);
+        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", park.getId());
+        Admin admin = new Admin(adminDTO);
         admin.setStatus((byte) 0);
         //校验
-//        Admin validResponse = adminMapper.selectByPhone(admin.getPhone());
         if (adminMapper.selectByPhone(admin.getPhone()) != null) {
             return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
         }
@@ -117,12 +112,7 @@ public class ParkServiceImpl implements ParkService {
             ParkVO parkVO = new ParkVO(park, area);
             parkVOList.add(parkVO);
         }
-        PageInfo pageInfo = new PageInfo(parkList);
-        pageInfo.setList(parkVOList);
-        PageResponseBean page = new PageResponseBean<Park>(pageInfo);
-        page.setCode(0);
-        page.setHttpStatus(200);
-        return page;
+        return PageUtil.page(parkList, parkVOList);
     }
 
     @Override
@@ -138,32 +128,23 @@ public class ParkServiceImpl implements ParkService {
                 parkVOList.add(parkVO);
             }
         }
-        PageInfo pageInfo = new PageInfo(parkIdList);
-        pageInfo.setList(parkVOList);
-        PageResponseBean page = new PageResponseBean<Park>(pageInfo);
-        page.setCode(0);
-        page.setHttpStatus(200);
-        return page;
+        return PageUtil.page(parkIdList, parkVOList);
     }
 
     @Override
-    public ResponseEntity<Integer> updateByPrimaryKeySelective(Park record, Integer[] appIds2, Integer[] appIds3) {
-        if (parkMapper.updateByPrimaryKeySelective(record) != 1) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelective(ParkDTO parkDTO) {
+        //2.创建entity
+        Park park = new Park(parkDTO);
+        //3.响应校验
+        if (parkMapper.updateByPrimaryKeySelective(park) != 1) {
             return ResponseEntityUtil.fail("园区更新失败");
         }
-        Integer parkId = record.getId();
-        if (appIds2.length != 0) {
-            for (Integer appId2 : appIds2) {
-                Connection connection = new Connection();
-                connection.setAppId(appId2);
-                connection.setParkId(parkId);
-                connectionMapper.insertSelective(connection);
-                AppDetail appDetail = new AppDetail();
-                appDetail.setAppId(appId2);
-                appDetail.setParkId(parkId);
-                appDetailMapper.insertSelective(appDetail);
-            }
+        Integer parkId = parkDTO.getId();
+        Integer[] appIds = parkDTO.getAppIds2();
+        if (appIds.length != 0) {
+            connectionForPark(parkId, appIds);
         }
+        Integer[] appIds3 = parkDTO.getAppIds3();
         if (appIds3.length != 0) {
             for (Integer appId3 : appIds3) {
                 connectionMapper.deleteByParkIdAndAppId(parkId, appId3);
@@ -174,11 +155,26 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy) {
-        Park record = new Park();
-        record.setId(id);
-        record.setStatus(status);
-        record.setUpdateBy(updateBy);
-        return ResponseEntityUtil.success(parkMapper.updateByPrimaryKeySelective(record));
+    public ResponseEntity<Errors> updateStatus(ParkDTO parkDTO) {
+        //2.创建entity
+        Park park = new Park(parkDTO);
+        //3.响应校验
+        if (parkMapper.updateByPrimaryKeySelective(park) != 1) {
+            return ResponseEntityUtil.fail("更新失败");
+        }
+        return ResponseEntityUtil.success(Errors.SUCCESS);
+    }
+
+    private void connectionForPark(Integer parkId, Integer[] appIds) {
+        for (Integer appId : appIds) {
+            Connection connection = new Connection();
+            connection.setAppId(appId);
+            connection.setParkId(parkId);
+            connectionMapper.insertSelective(connection);
+            AppDetail appDetail = new AppDetail();
+            appDetail.setAppId(appId);
+            appDetail.setParkId(parkId);
+            appDetailMapper.insertSelective(appDetail);
+        }
     }
 }

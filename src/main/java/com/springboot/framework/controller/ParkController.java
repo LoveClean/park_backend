@@ -1,12 +1,14 @@
 package com.springboot.framework.controller;
 
 import com.springboot.framework.annotation.ACS;
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.controller.request.ParkInsertSelective;
 import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.request.ParkUpdateSelective;
 import com.springboot.framework.controller.request.UpdateByStatus;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Park;
+import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.service.ParkService;
 import com.springboot.framework.util.ResponseEntity;
 import io.swagger.annotations.Api;
@@ -25,21 +27,22 @@ public class ParkController extends BaseController {
 
     @ApiOperation(value = "删除", notes = "删除园区")
     @DeleteMapping(value = "deleteByPrimaryKey")
-    public ResponseEntity<Integer> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
-        return parkService.deleteByPrimaryKey(id, super.getSessionUser(request).getName());
+    public ResponseEntity<Errors> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
+        ParkDTO parkDTO = new ParkDTO(id, super.getSessionUser(request).getAccount());
+        return parkService.deleteByPrimaryKey(parkDTO);
     }
 
     @ApiOperation(value = "新增", notes = "新增园区")
     @PostMapping(value = "insertSelective")
-    public ResponseEntity<Integer> insertSelective(@RequestBody ParkInsertSelective bean, HttpServletRequest request) {
-        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getName());
-        return parkService.insertSelective(record, bean.getAppIds());
+    public ResponseEntity<Errors> insertSelective(@RequestBody ParkInsertSelective bean, HttpServletRequest request) {
+        ParkDTO parkDTO = new ParkDTO(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getAccount(), bean.getAppIds());
+        return parkService.insertSelective(parkDTO);
     }
 
     @ACS(allowAnonymous = true)
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
     @PostMapping(value = "insertSelectiveForMember")
-    public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
+    public ResponseEntity<Errors> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
         return parkService.insertSelectiveForMember(bean);
     }
 
@@ -49,11 +52,10 @@ public class ParkController extends BaseController {
         return parkService.selectByPrimaryKey(id);
     }
 
-    @ApiOperation(value = "查看", notes = "查看园区")
+    @ApiOperation(value = "查看", notes = "查看自己园区")
     @GetMapping(value = "selectPark")
     public ResponseEntity<Park> selectPark(HttpServletRequest request) {
-        Integer parkId = super.getSessionUser(request).getParkId();
-        return parkService.selectByPrimaryKey(parkId);
+        return parkService.selectByPrimaryKey(super.getSessionUser(request).getParkId());
     }
 
     @ACS(allowAnonymous = true)
@@ -71,16 +73,15 @@ public class ParkController extends BaseController {
 
     @ApiOperation(value = "更新", notes = "更新应用")
     @PutMapping(value = "updateByPrimaryKeySelective")
-    public ResponseEntity<Integer> updateByPrimaryKeySelective(@RequestBody ParkUpdateSelective bean, HttpServletRequest request) {
-        Park record = new Park(bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), null);
-        record.setId(bean.getId());
-        record.setUpdateBy(super.getSessionUser(request).getName());
-        return parkService.updateByPrimaryKeySelective(record, bean.getAppIds2(), bean.getAppIds3());
+    public ResponseEntity<Errors> updateByPrimaryKeySelective(@RequestBody ParkUpdateSelective bean, HttpServletRequest request) {
+        ParkDTO parkDTO = new ParkDTO(bean.getId(), bean.getName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), super.getSessionUser(request).getAccount(), bean.getAppIds2(), bean.getAppIds3());
+        return parkService.updateByPrimaryKeySelective(parkDTO);
     }
 
     @ApiOperation(value = "更新状态", notes = "更新查看应用状态")
     @PutMapping(value = "updateStatus")
-    public ResponseEntity<Integer> updateStatus(@RequestBody UpdateByStatus bean, HttpServletRequest request) {
-        return parkService.updateStatus(bean.getId(), bean.getStatus(), super.getSessionUser(request).getName());
+    public ResponseEntity<Errors> updateStatus(@RequestBody UpdateByStatus bean, HttpServletRequest request) {
+        ParkDTO parkDTO = new ParkDTO(bean.getId(), super.getSessionUser(request).getAccount(), bean.getStatus());
+        return parkService.updateStatus(parkDTO);
     }
 }

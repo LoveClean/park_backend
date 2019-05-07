@@ -1,17 +1,19 @@
 package com.springboot.framework.service;
 
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.dao.entity.Park;
+import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.util.ResponseEntity;
 
 public interface ParkService {
-    ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy);
+    ResponseEntity<Errors> deleteByPrimaryKey(ParkDTO parkDTO);
 
-    ResponseEntity<Integer> insertSelective(Park record, Integer[] appIds);
+    ResponseEntity<Errors> insertSelective(ParkDTO parkDTO);
 
-    ResponseEntity<Integer> insertSelectiveForMember(ParkInsertSelectiveForMember bean);
+    ResponseEntity<Errors> insertSelectiveForMember(ParkInsertSelectiveForMember bean);
 
     ResponseEntity<Park> selectByPrimaryKey(Integer id);
 
@@ -19,7 +21,7 @@ public interface ParkService {
 
     PageResponseBean selectListByAppId(Integer pageNum, Integer pageSize, Integer appId);
 
-    ResponseEntity<Integer> updateByPrimaryKeySelective(Park record, Integer[] appIds2, Integer[] appIds3);
+    ResponseEntity<Errors> updateByPrimaryKeySelective(ParkDTO parkDTO);
 
-    ResponseEntity<Integer> updateStatus(Integer id, Byte status, String updateBy);
+    ResponseEntity<Errors> updateStatus(ParkDTO parkDTO);
 }
