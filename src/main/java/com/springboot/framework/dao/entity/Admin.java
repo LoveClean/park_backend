@@ -41,7 +41,9 @@ public class Admin implements Serializable {
         this.phone = adminDTO.getPhone();
         this.name = adminDTO.getName();
         this.createBy = adminDTO.getCreateBy();
+        this.createDate = adminDTO.getCreateDate();
         this.updateBy = adminDTO.getUpdateBy();
+        this.updateDate = adminDTO.getUpdateDate();
         this.status = adminDTO.getStatus();
         this.parkId = adminDTO.getParkId();
     }
