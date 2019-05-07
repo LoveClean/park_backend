@@ -64,3 +64,13 @@ mybatis:
 
 logging:
   path: /base-web-log
+
+# 短信-华为
+sms:
+  url: https://api.rtc.huaweicloud.com:10443/sms/batchSendSms/v1
+  appKey: c3HE0vULKWAQERfmGPodIN28WYha
+  appSecret: W8yNFnayD1m584e6PqMF6fAtrzZY
+  sender: 10690549122901739
+  templateId: 25c1377f19ea4daeb0ca75a515326142
+  signature: 华为云短信测试
+  statusCallBack:

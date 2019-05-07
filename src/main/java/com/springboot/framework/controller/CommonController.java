@@ -5,18 +5,25 @@ import com.alibaba.fastjson.JSONObject;
 import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.config.AppConfig;
 import com.springboot.framework.contants.Const;
+import com.springboot.framework.controller.request.CaptchaRequestBean;
+import com.springboot.framework.controller.response.CaptchaResponseBean;
+import com.springboot.framework.exception.BusinessException;
+import com.springboot.framework.service.MobileCaptchaService;
 import com.springboot.framework.service.RedisService;
+import com.springboot.framework.util.ResponseEntity;
+import com.springboot.framework.util.ResponseEntityUtil;
 import com.springboot.framework.util.StringUtil;
 import com.springboot.framework.util.ToolsUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -39,6 +46,10 @@ public class CommonController {
 //	private MobileCaptchaService mobileCaptchaService;
     @Resource
     private RedisService redisService;
+
+    @Resource
+    private MobileCaptchaService mobileCaptchaService;
+
 
     /**
      * IP定位
@@ -79,23 +90,28 @@ public class CommonController {
         return JSON.parseObject(jsonStrToken);
     }
 
-//    /**
-//     * 发送验证码
-//     *
-//     * @param bean
-//     * @return
-//     */
-//	@ApiOperation(value = "发送短信验证码", notes = "type类型：1注册,2修改密码,3重置密码,4注册+登陆,5绑定卡<br/>有效时间5分钟，相同类型发送冷却时间1分钟<br/>返回：code=0成功；code=1手机号有误;code=2未超过发送冷却时间，exception=剩余发送冷却时间(单位秒)；code=3送失败请稍后再试")
-//	@RequestMapping(value = "/sms/sendCaptcha", method = RequestMethod.POST)
-//	public ResponseEntity<CaptchaResponseBean> sendCaptcha(@Valid @RequestBody CaptchaRequestBean bean) {
-//		CaptchaResponseBean result = null;
-//		try {
-//			result = mobileCaptchaService.send(bean);
-//		} catch (BusinessException e) {
-//			ExceptionUtil.throwException(Errors.SYSTEM_CUSTOM_ERROR.code, e.toString());
-//		}
-//		return ResponseEntity.ok(result);
-//	}
+    /**
+     * 发送验证码
+     *
+     * @param request
+     * @return
+     */
+    @ACS(allowAnonymous = true)
+    @ApiOperation(
+            value = "发送短信验证码",
+            notes = "type类型：1注册,2修改密码,3重置密码,4注册+登陆,5绑定卡<br/>有效时间5分钟，相同类型发送冷却时间1分钟<br/>返回：code=0成功；code=1手机号有误;code=2未超过发送冷却时间，exception=剩余发送冷却时间(单位秒)；code=3送失败请稍后再试")
+    @PostMapping(value = "/sms/sendCaptcha")
+    public ResponseEntity<CaptchaResponseBean> sendCaptcha(@Valid @RequestBody CaptchaRequestBean bean, BindingResult bindingResult , HttpServletRequest request) {
+        if(bindingResult.hasErrors()){
+            return ResponseEntityUtil.fail(bindingResult.getFieldError().getDefaultMessage());
+        }
+        try {
+            CaptchaResponseBean result = mobileCaptchaService.send(bean ,request);
+            return ResponseEntityUtil.success(result);
+        } catch (BusinessException e) {
+            return ResponseEntityUtil.fail(e.getCode(), e.getMessage());
+        }
+    }
 
 //    /**
 //     * 验证验证码
@@ -117,7 +133,7 @@ public class CommonController {
 //	}
 
     @ACS(allowAnonymous = true)
-    @ApiOperation(value = "随机验证码接口", notes = "随机验证码")
+    @ApiOperation(value = "图片验证码接口", notes = "随机验证码")
     @GetMapping(value = "get_verify_code")
     public void createVerifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //1定义bufferedImage对象
@@ -156,9 +172,9 @@ public class CommonController {
 
 
     @ACS(allowAnonymous = true)
-    @ApiOperation(value = "校验随机验证码接口", notes = "校验随机验证码")
+    @ApiOperation(value = "校验图片验证码接口", notes = "校验随机验证码")
     @PostMapping(value = "valid_verify_code")
-    public ResponseEntity<Boolean> validVerifyCode(@RequestBody String code, HttpServletRequest request) {
+    public org.springframework.http.ResponseEntity<Boolean> validVerifyCode(@RequestBody String code, HttpServletRequest request) {
         Boolean flag = false;
         // String randomCode=
         // (String)request.getSession().getAttribute(Const.VERIFY_CODE);
@@ -172,7 +188,7 @@ public class CommonController {
                 redisService.delete(Const.VERIFY_CODE);
             }
         }
-        return ResponseEntity.ok(flag);
+        return org.springframework.http.ResponseEntity.ok(flag);
     }
 
 }

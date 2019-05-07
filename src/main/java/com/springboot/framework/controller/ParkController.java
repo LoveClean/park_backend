@@ -40,6 +40,7 @@ public class ParkController extends BaseController {
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
     @PostMapping(value = "insertSelectiveForMember")
     public ResponseEntity<Integer> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
+
         return parkService.insertSelectiveForMember(bean);
     }
 
