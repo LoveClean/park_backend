@@ -32,22 +32,22 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "删除管理员", notes = "删除管理员")
     @DeleteMapping(value = "deleteByPrimaryKey")
     public ResponseEntity<Errors> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
-        AdminDTO adminDTO = new AdminDTO(id, super.getSessionUser(request).getAccount());
-        return adminService.deleteByPrimaryKey(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(id, super.getSessionUser(request).getAccount());
+        return adminService.deleteByPrimaryKey(recordDTO);
     }
 
     @ApiOperation(value = "新增超级管理员", notes = "新增超级管理员")
     @PostMapping(value = "insertSelective")
     public ResponseEntity<Errors> insertSelective(@RequestBody AdminInsert bean, HttpServletRequest request) {
-        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), null);
-        return adminService.insertSelective(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), null);
+        return adminService.insertSelective(recordDTO);
     }
 
     @ApiOperation(value = "新增园区管理员", notes = "新增园区管理员")
     @PostMapping(value = "insertSelectiveForParkId")
     public ResponseEntity<Errors> insertSelectiveForParkId(@RequestBody AdminInsertForParkId bean, HttpServletRequest request) {
-        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), bean.getParkId());
-        return adminService.insertSelective(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), bean.getParkId());
+        return adminService.insertSelective(recordDTO);
     }
 
     @ACS(allowAnonymous = true)
@@ -58,8 +58,8 @@ public class AdminController extends BaseController {
         if (!flag) {
             return ResponseEntityUtil.fail("验证码错误");
         }
-        AdminDTO adminDTO = new AdminDTO(bean.getLoginKey(), bean.getLoginPwd(), bean.getParkAdmin());
-        ResponseEntity<Admin> response = adminService.login(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(bean.getLoginKey(), bean.getLoginPwd(), bean.getParkAdmin());
+        ResponseEntity<Admin> response = adminService.login(recordDTO);
         if (response.isSuccess()) {
             Admin admin = response.getData();
             return accessToken(admin, request);
@@ -105,8 +105,8 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "更新管理员信息", notes = "更新管理员信息")
     @PutMapping(value = "updateByPrimaryKeySelective")
     public ResponseEntity<Errors> updateByPrimaryKeySelective(@RequestBody AdminUpdateByPrimaryKey bean, HttpServletRequest request) {
-        AdminDTO adminDTO = new AdminDTO(bean.getId(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), bean.getStatus());
-        return adminService.updateByPrimaryKeySelective(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(bean.getId(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), bean.getStatus());
+        return adminService.updateByPrimaryKeySelective(recordDTO);
     }
 
     @ApiOperation(value = "更新个人密码", notes = "更新个人密码")
@@ -118,15 +118,15 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "更新个人手机号", notes = "更新管理员手机号")
     @PutMapping(value = "updateByPhone")
     public ResponseEntity<Errors> updateByPhone(@RequestParam String phone, HttpServletRequest request) {
-        AdminDTO adminDTO = new AdminDTO(super.getSessionUser(request).getId(), null, phone, null, super.getSessionUser(request).getAccount(), null);
-        return adminService.updateByPrimaryKeySelective(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(super.getSessionUser(request).getId(), null, phone, null, super.getSessionUser(request).getAccount(), null);
+        return adminService.updateByPrimaryKeySelective(recordDTO);
     }
 
     @ApiOperation(value = "更新管理员状态", notes = "更新管理员状态")
     @PutMapping(value = "updateByStatus")
     public ResponseEntity<Errors> updateByStatus(@RequestBody UpdateByStatus bean, HttpServletRequest request) {
-        AdminDTO adminDTO = new AdminDTO(bean.getId(), null, null, null, super.getSessionUser(request).getAccount(), bean.getStatus());
-        return adminService.updateByPrimaryKeySelective(adminDTO);
+        AdminDTO recordDTO = new AdminDTO(bean.getId(), null, null, null, super.getSessionUser(request).getAccount(), bean.getStatus());
+        return adminService.updateByPrimaryKeySelective(recordDTO);
     }
 
     private Boolean verifyCode(String verifyCode) {

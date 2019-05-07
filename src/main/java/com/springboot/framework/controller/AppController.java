@@ -6,6 +6,7 @@ import com.springboot.framework.controller.request.*;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;
 import com.springboot.framework.dao.entity.AppDetail;
+import com.springboot.framework.dto.AppDTO;
 import com.springboot.framework.service.AppService;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
@@ -30,7 +31,8 @@ public class AppController extends BaseController {
     @ApiOperation(value = "删除", notes = "删除应用")
     @DeleteMapping(value = "deleteByPrimaryKey")
     public ResponseEntity<Integer> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
-        return appService.deleteByPrimaryKey(id, super.getSessionUser(request).getName());
+        AppDTO recordDTO = new AppDTO(id, super.getSessionUser(request).getAccount());
+        return appService.deleteByPrimaryKey(recordDTO);
     }
 
     @ApiOperation(value = "新增", notes = "新增应用")

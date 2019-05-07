@@ -10,6 +10,7 @@ import com.springboot.framework.dao.entity.Connection;
 import com.springboot.framework.dao.mapper.AppDetailMapper;
 import com.springboot.framework.dao.mapper.AppMapper;
 import com.springboot.framework.dao.mapper.ConnectionMapper;
+import com.springboot.framework.dto.AppDTO;
 import com.springboot.framework.service.AppService;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
@@ -29,10 +30,10 @@ public class AppServiceImpl implements AppService {
     private ConnectionMapper connectionMapper;
 
     @Override
-    public ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy) {
-        appDetailMapper.deleteByAppId(id);
-        connectionMapper.deleteByAppId(id);
-        return ResponseEntityUtil.success(appMapper.deleteByPrimaryKey(id, updateBy));
+    public ResponseEntity<Integer> deleteByPrimaryKey(AppDTO recordDTO) {
+        appDetailMapper.deleteByAppId(recordDTO.getId());
+        connectionMapper.deleteByAppId(recordDTO.getId());
+        return ResponseEntityUtil.success(appMapper.deleteByPrimaryKey(recordDTO.getId(), recordDTO.getUpdateBy()));
     }
 
     @Override

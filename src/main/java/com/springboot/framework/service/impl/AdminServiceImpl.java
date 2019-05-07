@@ -19,42 +19,42 @@ public class AdminServiceImpl implements AdminService {
     private AdminMapper adminMapper;
 
     @Override
-    public ResponseEntity<Errors> deleteByPrimaryKey(AdminDTO adminDTO) {
+    public ResponseEntity<Errors> deleteByPrimaryKey(AdminDTO recordDTO) {
         //2.创建entity
-        Admin admin = new Admin(adminDTO);
+        Admin record = new Admin(recordDTO);
         //3.响应校验
-        if (adminMapper.deleteByPrimaryKey(admin.getId(), admin.getUpdateBy()) == 0) {
+        if (adminMapper.deleteByPrimaryKey(record.getId(), record.getUpdateBy()) == 0) {
             return ResponseEntityUtil.fail("删除失败");
         }
         return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
-    public ResponseEntity<Errors> insertSelective(AdminDTO adminDTO) {
+    public ResponseEntity<Errors> insertSelective(AdminDTO recordDTO) {
         //1.请求校验
-        Errors errors = validRequest(adminDTO, "insertSelective");
+        Errors errors = validRequest(recordDTO, "insertSelective");
         if (errors.code != 0) {
             return ResponseEntityUtil.fail(errors);
         }
         //2.创建entity
-        Admin admin = new Admin(adminDTO);
-        admin.setPassword(MD5Util.MD5(admin.getPassword()));
+        Admin record = new Admin(recordDTO);
+        record.setPassword(MD5Util.MD5(record.getPassword()));
         //3.响应校验
-        if (adminMapper.insertSelective(admin) == 0) {
+        if (adminMapper.insertSelective(record) == 0) {
             return ResponseEntityUtil.fail("添加失败");
         }
         return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
-    public ResponseEntity<Admin> login(AdminDTO adminDTO) {
+    public ResponseEntity<Admin> login(AdminDTO recordDTO) {
         //1.请求校验
-        Errors errors = validRequest(adminDTO, "login");
+        Errors errors = validRequest(recordDTO, "login");
         if (errors.code != 0) {
             return ResponseEntityUtil.fail(errors);
         }
         //2.创建entity
-        Admin admin = adminMapper.login(adminDTO.getLoginKey(), MD5Util.MD5(adminDTO.getPassword()));
+        Admin admin = adminMapper.login(recordDTO.getLoginKey(), MD5Util.MD5(recordDTO.getPassword()));
         //3.响应校验
         if (admin == null) {
             return ResponseEntityUtil.fail(Errors.USER_LOGIN_ERROR);
@@ -62,10 +62,10 @@ public class AdminServiceImpl implements AdminService {
         if (admin.getStatus() == 0) {
             return ResponseEntityUtil.fail(Errors.SYSTEM_NO_ACCESS);
         }
-        if (adminDTO.getParkAdmin() && admin.getParkId() == null) {
+        if (recordDTO.getParkAdmin() && admin.getParkId() == null) {
             return ResponseEntityUtil.fail(Errors.SYSTEM_NO_ACCESS);
         }
-        if (!adminDTO.getParkAdmin() && admin.getParkId() != null) {
+        if (!recordDTO.getParkAdmin() && admin.getParkId() != null) {
             return ResponseEntityUtil.fail(Errors.SYSTEM_NO_ACCESS);
         }
         return ResponseEntityUtil.success(admin);
@@ -96,14 +96,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ResponseEntity<Errors> updateByPrimaryKeySelective(AdminDTO adminDTO) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelective(AdminDTO recordDTO) {
         //1.请求校验
-        Errors errors = validRequest(adminDTO, "updateByPrimaryKeySelective");
+        Errors errors = validRequest(recordDTO, "updateByPrimaryKeySelective");
         if (errors.code != 0) {
             return ResponseEntityUtil.fail(errors);
         }
         //2.创建entity
-        Admin admin = new Admin(adminDTO);
+        Admin admin = new Admin(recordDTO);
         //3.响应校验
         if (adminMapper.updateByPrimaryKeySelective(admin) == 0) {
             return ResponseEntityUtil.fail("更新失败");
@@ -120,27 +120,27 @@ public class AdminServiceImpl implements AdminService {
         return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
-    private Errors validRequest(AdminDTO adminDTO, String type) {
+    private Errors validRequest(AdminDTO recordDTO, String type) {
         Admin validRequest;
         switch (type) {
             case "insertSelective":
-                validRequest = adminMapper.selectByPhone(adminDTO.getPhone());
+                validRequest = adminMapper.selectByPhone(recordDTO.getPhone());
                 if (validRequest != null) {
                     return Errors.USER_MOBILE_EXISTS;
                 }
-                validRequest = adminMapper.selectByAccount(adminDTO.getAccount());
+                validRequest = adminMapper.selectByAccount(recordDTO.getAccount());
                 if (validRequest != null) {
                     return Errors.USER_USERNAME_SAME;
                 }
                 break;
             case "login":
-                if (StringUtil.isEmpty(adminDTO.getLoginKey()) || StringUtil.isEmpty(adminDTO.getPassword())) {
+                if (StringUtil.isEmpty(recordDTO.getLoginKey()) || StringUtil.isEmpty(recordDTO.getPassword())) {
                     return Errors.SYSTEM_REQUEST_PARAM_ERROR;
                 }
                 break;
             case "updateByPrimaryKeySelective":
-                validRequest = adminMapper.selectByPhone(adminDTO.getPhone());
-                if (validRequest != null && !validRequest.getId().equals(adminDTO.getId())) {
+                validRequest = adminMapper.selectByPhone(recordDTO.getPhone());
+                if (validRequest != null && !validRequest.getId().equals(recordDTO.getId())) {
                     return Errors.USER_MOBILE_EXISTS;
                 }
                 break;

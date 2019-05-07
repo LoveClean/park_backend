@@ -9,9 +9,9 @@ import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.util.ResponseEntity;
 
 public interface ParkService {
-    ResponseEntity<Errors> deleteByPrimaryKey(ParkDTO parkDTO);
+    ResponseEntity<Errors> deleteByPrimaryKey(ParkDTO recordDTO);
 
-    ResponseEntity<Errors> insertSelective(ParkDTO parkDTO);
+    ResponseEntity<Errors> insertSelective(ParkDTO recordDTO);
 
     ResponseEntity<Errors> insertSelectiveForMember(ParkInsertSelectiveForMember bean);
 
@@ -21,7 +21,7 @@ public interface ParkService {
 
     PageResponseBean selectListByAppId(Integer pageNum, Integer pageSize, Integer appId);
 
-    ResponseEntity<Errors> updateByPrimaryKeySelective(ParkDTO parkDTO);
+    ResponseEntity<Errors> updateByPrimaryKeySelective(ParkDTO recordDTO);
 
-    ResponseEntity<Errors> updateStatus(ParkDTO parkDTO);
+    ResponseEntity<Errors> updateStatus(ParkDTO recordDTO);
 }

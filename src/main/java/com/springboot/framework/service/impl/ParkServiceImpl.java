@@ -35,32 +35,32 @@ public class ParkServiceImpl implements ParkService {
     private AdminMapper adminMapper;
 
     @Override
-    public ResponseEntity<Errors> deleteByPrimaryKey(ParkDTO parkDTO) {
-        appDetailMapper.deleteByParkId(parkDTO.getId());
-        connectionMapper.deleteByParkId(parkDTO.getId());
+    public ResponseEntity<Errors> deleteByPrimaryKey(ParkDTO recordDTO) {
+        appDetailMapper.deleteByParkId(recordDTO.getId());
+        connectionMapper.deleteByParkId(recordDTO.getId());
         //2.创建entity
-        Park park = new Park(parkDTO);
+        Park record = new Park(recordDTO);
         //3.响应校验
-        if (parkMapper.deleteByPrimaryKey(park.getId(), park.getUpdateBy()) == 0) {
+        if (parkMapper.deleteByPrimaryKey(record.getId(), record.getUpdateBy()) == 0) {
             return ResponseEntityUtil.fail("删除失败");
         }
         return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
-    public ResponseEntity<Errors> insertSelective(ParkDTO parkDTO) {
+    public ResponseEntity<Errors> insertSelective(ParkDTO recordDTO) {
         //1.请求校验
-        if (parkMapper.selectByName(parkDTO.getName()) != null) {
+        if (parkMapper.selectByName(recordDTO.getName()) != null) {
             return ResponseEntityUtil.fail("此园区已申请注册");
         }
         //2.创建entity
-        Park park = new Park(parkDTO);
+        Park record = new Park(recordDTO);
         //3.响应校验
-        if (parkMapper.insertSelective(park) != 1) {
+        if (parkMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
-        Integer parkId = park.getId();
-        Integer[] appIds = parkDTO.getAppIds();
+        Integer parkId = record.getId();
+        Integer[] appIds = recordDTO.getAppIds();
         if (appIds.length != 0) {
             connectionForPark(parkId, appIds);
         }
@@ -69,16 +69,16 @@ public class ParkServiceImpl implements ParkService {
 
     @Override
     public ResponseEntity<Errors> insertSelectiveForMember(ParkInsertSelectiveForMember bean) {
-        ParkDTO parkDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
-        Park park = new Park(parkDTO);
-        park.setStatus((byte) 0);
-        if (parkMapper.selectByName(park.getName()) != null) {
+        ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
+        Park record = new Park(recordDTO);
+        record.setStatus((byte) 0);
+        if (parkMapper.selectByName(record.getName()) != null) {
             return ResponseEntityUtil.fail("此园区已申请注册");
         }
-        if (parkMapper.insertSelective(park) != 1) {
+        if (parkMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
-        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", park.getId());
+        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", record.getId());
         Admin admin = new Admin(adminDTO);
         admin.setStatus((byte) 0);
         //校验
@@ -132,19 +132,19 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public ResponseEntity<Errors> updateByPrimaryKeySelective(ParkDTO parkDTO) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelective(ParkDTO recordDTO) {
         //2.创建entity
-        Park park = new Park(parkDTO);
+        Park record = new Park(recordDTO);
         //3.响应校验
-        if (parkMapper.updateByPrimaryKeySelective(park) != 1) {
+        if (parkMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("园区更新失败");
         }
-        Integer parkId = parkDTO.getId();
-        Integer[] appIds = parkDTO.getAppIds2();
+        Integer parkId = recordDTO.getId();
+        Integer[] appIds = recordDTO.getAppIds2();
         if (appIds.length != 0) {
             connectionForPark(parkId, appIds);
         }
-        Integer[] appIds3 = parkDTO.getAppIds3();
+        Integer[] appIds3 = recordDTO.getAppIds3();
         if (appIds3.length != 0) {
             for (Integer appId3 : appIds3) {
                 connectionMapper.deleteByParkIdAndAppId(parkId, appId3);
@@ -155,11 +155,11 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public ResponseEntity<Errors> updateStatus(ParkDTO parkDTO) {
+    public ResponseEntity<Errors> updateStatus(ParkDTO recordDTO) {
         //2.创建entity
-        Park park = new Park(parkDTO);
+        Park record = new Park(recordDTO);
         //3.响应校验
-        if (parkMapper.updateByPrimaryKeySelective(park) != 1) {
+        if (parkMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("更新失败");
         }
         return ResponseEntityUtil.success(Errors.SUCCESS);

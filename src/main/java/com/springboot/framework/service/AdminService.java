@@ -7,11 +7,11 @@ import com.springboot.framework.dto.AdminDTO;
 import com.springboot.framework.util.ResponseEntity;
 
 public interface AdminService {
-    ResponseEntity<Errors> deleteByPrimaryKey(AdminDTO adminDTO);
+    ResponseEntity<Errors> deleteByPrimaryKey(AdminDTO recordDTO);
 
-    ResponseEntity<Errors> insertSelective(AdminDTO adminDTO);
+    ResponseEntity<Errors> insertSelective(AdminDTO recordDTO);
 
-    ResponseEntity<Admin> login(AdminDTO adminDTO);
+    ResponseEntity<Admin> login(AdminDTO recordDTO);
 
     ResponseEntity<Admin> selectByPrimaryKey(Integer id);
 
@@ -21,7 +21,7 @@ public interface AdminService {
 
     ResponseEntity<Integer> selectCount();
 
-    ResponseEntity<Errors> updateByPrimaryKeySelective(AdminDTO adminDTO);
+    ResponseEntity<Errors> updateByPrimaryKeySelective(AdminDTO recordDTO);
 
     ResponseEntity<Errors> updateByPassword(Integer id, String oldPassword, String newPassword, String updateBy);
 }

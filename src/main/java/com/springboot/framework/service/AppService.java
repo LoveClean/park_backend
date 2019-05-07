@@ -3,13 +3,14 @@ package com.springboot.framework.service;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;
 import com.springboot.framework.dao.entity.AppDetail;
+import com.springboot.framework.dto.AppDTO;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.vo.AppDetailVO;
 
 import java.util.List;
 
 public interface AppService {
-    ResponseEntity<Integer> deleteByPrimaryKey(Integer id, String updateBy);
+    ResponseEntity<Integer> deleteByPrimaryKey(AppDTO recordDTO);
 
     ResponseEntity<Integer> insertSelective(App record, Integer[] parkIds);
 
