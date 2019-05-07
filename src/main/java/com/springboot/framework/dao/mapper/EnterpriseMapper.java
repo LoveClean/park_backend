@@ -26,4 +26,7 @@ public interface EnterpriseMapper {
 
     @Select("select * from tb_enterprise where park_id = #{parkId} and status != -1 ORDER BY create_date DESC")
     List<Enterprise> selectListByParkId(@Param("parkId") Integer parkId);
+
+    @Select("select * from tb_enterprise where name = #{name} and status != -1 limit 1")
+    Enterprise selectByName(@Param("name") String name);
 }

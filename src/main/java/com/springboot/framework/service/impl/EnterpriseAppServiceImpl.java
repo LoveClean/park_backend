@@ -4,8 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Enterprise;
-import com.springboot.framework.dao.entity.House;
-import com.springboot.framework.dao.entity.HousePicture;
 import com.springboot.framework.dao.mapper.EnterpriseMapper;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
@@ -45,6 +43,10 @@ public class EnterpriseAppServiceImpl {
 
 
     public ResponseEntity<Object> insert(Enterprise enterprise) {
+        // 判断企业名是否存在
+        if(!checkEnterpriseName(enterprise.getName(),null)){
+            return ResponseEntityUtil.fail("该企业已存在");
+        }
         if (enterpriseMapper.insertSelective(enterprise) == 0) {
             return ResponseEntityUtil.fail("企业新增失败");
         }
@@ -53,9 +55,27 @@ public class EnterpriseAppServiceImpl {
 
 
     public ResponseEntity<Object> update(Enterprise enterprise) {
+        // 判断企业名是否重复
+        if(!checkEnterpriseName(enterprise.getName(),enterprise.getId())){
+            return ResponseEntityUtil.fail("该企业已存在");
+        }
         if (enterpriseMapper.updateByPrimaryKeySelective(enterprise) == 0) {
             return ResponseEntityUtil.fail("企业修改失败");
         }
         return ResponseEntityUtil.success();
+    }
+
+    // 检查企业名称,通过true，不通过false
+    public boolean checkEnterpriseName(String name , Integer id){
+        Enterprise enterprise =  enterpriseMapper.selectByName(name);
+        if(enterprise==null){
+            return true;
+        }else{
+            if(id!=null&&enterprise.getId().equals(id)){
+                return true;
+            }else {
+                return false;
+            }
+        }
     }
 }
