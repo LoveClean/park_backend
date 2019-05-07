@@ -28,8 +28,8 @@ import java.util.*;
 //如果JDK版本是1.8,可使用原生Base64类
 
 /**
- * @Author SWF
- * @Date 2019/4/12 13:26
+ * @author SWF
+ * @date 2019/4/12 13:26
  **/
 @Service
 public class HwSendSmsUtil {
@@ -61,7 +61,7 @@ public class HwSendSmsUtil {
         //选填,短信状态报告接收地址,推荐使用域名,为空或者不填表示不接收状态报告
         String statusCallBack = "";
 
-        /**
+        /*
          * 选填,使用无变量模板时请赋空值 String templateParas = "";
          * 单变量模板示例:模板内容为"您的验证码是${NUM_6}"时,templateParas可填写为"[\"369751\"]"
          * 双变量模板示例:模板内容为"您有${NUM_2}件快递请到${TXT_32}领取"时,templateParas可填写为"[\"3\",\"人民公园正门\"]"
