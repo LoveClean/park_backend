@@ -1,7 +1,7 @@
 package com.springboot.framework.service;
 
 
-import com.springboot.framework.contant.SmsConstants.SmsCaptchaType;
+import com.springboot.framework.constant.SmsConstants.SmsCaptchaType;
 import com.springboot.framework.controller.request.CaptchaRequestBean;
 import com.springboot.framework.controller.response.CaptchaResponseBean;
 

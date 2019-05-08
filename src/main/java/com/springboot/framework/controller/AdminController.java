@@ -1,8 +1,8 @@
 package com.springboot.framework.controller;
 
 import com.springboot.framework.annotation.ACS;
-import com.springboot.framework.contant.Const;
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.constant.Const;
+import com.springboot.framework.constant.Errors;
 import com.springboot.framework.controller.request.*;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Admin;

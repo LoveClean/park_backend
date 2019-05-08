@@ -2,7 +2,7 @@ package com.springboot.framework.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.constant.Errors;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;
 import com.springboot.framework.dao.entity.AppDetail;

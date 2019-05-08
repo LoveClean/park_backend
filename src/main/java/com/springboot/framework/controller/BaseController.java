@@ -1,7 +1,7 @@
 package com.springboot.framework.controller;
 
-import com.springboot.framework.contant.Const;
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.constant.Const;
+import com.springboot.framework.constant.Errors;
 import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.service.RedisTokenService;
 import com.springboot.framework.util.ExceptionUtil;

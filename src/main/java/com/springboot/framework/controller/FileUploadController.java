@@ -2,7 +2,7 @@ package com.springboot.framework.controller;
 
 import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.config.ImageConfig;
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.constant.Errors;
 import com.springboot.framework.controller.response.ImgUploadResponseBean;
 import com.springboot.framework.service.OBSService;
 import com.springboot.framework.util.ExceptionUtil;
