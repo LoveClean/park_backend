@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Enterprise;
 import com.springboot.framework.dao.mapper.EnterpriseMapper;
+import com.springboot.framework.util.PageUtil;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,7 @@ public class EnterpriseAppServiceImpl {
     public PageResponseBean selectListByParkId(int pageNum, int pageSize, Integer parkId) {
         PageHelper.startPage(pageNum, pageSize);
         List<Enterprise> enterpriseList = enterpriseMapper.selectListByParkId(parkId);
-        PageInfo pageInfo = new PageInfo(enterpriseList);
-
-        PageResponseBean bean = new PageResponseBean(pageInfo);
-        bean.setCode(0);
-        bean.setHttpStatus(200);
-        return bean;
+        return PageUtil.page(enterpriseList);
     }
 
 
@@ -44,7 +40,7 @@ public class EnterpriseAppServiceImpl {
 
     public ResponseEntity<Object> insert(Enterprise enterprise) {
         // 判断企业名是否存在
-        if(!checkEnterpriseName(enterprise.getName(),null)){
+        if (!checkEnterpriseName(enterprise.getName(), null)) {
             return ResponseEntityUtil.fail("该企业已存在");
         }
         if (enterpriseMapper.insertSelective(enterprise) == 0) {
@@ -56,7 +52,7 @@ public class EnterpriseAppServiceImpl {
 
     public ResponseEntity<Object> update(Enterprise enterprise) {
         // 判断企业名是否重复
-        if(!checkEnterpriseName(enterprise.getName(),enterprise.getId())){
+        if (!checkEnterpriseName(enterprise.getName(), enterprise.getId())) {
             return ResponseEntityUtil.fail("该企业已存在");
         }
         if (enterpriseMapper.updateByPrimaryKeySelective(enterprise) == 0) {
@@ -66,14 +62,14 @@ public class EnterpriseAppServiceImpl {
     }
 
     // 检查企业名称,通过true，不通过false
-    public boolean checkEnterpriseName(String name , Integer id){
-        Enterprise enterprise =  enterpriseMapper.selectByName(name);
-        if(enterprise==null){
+    private boolean checkEnterpriseName(String name, Integer id) {
+        Enterprise enterprise = enterpriseMapper.selectByName(name);
+        if (enterprise == null) {
             return true;
-        }else{
-            if(id!=null&&enterprise.getId().equals(id)){
+        } else {
+            if (id != null && enterprise.getId().equals(id)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
         }

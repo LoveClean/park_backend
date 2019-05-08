@@ -1,10 +1,9 @@
 package com.springboot.framework.service;
 
 import com.springboot.framework.contants.Errors;
-import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.response.PageResponseBean;
-import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.dao.entity.Park;
+import com.springboot.framework.dto.AdminDTO;
 import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.util.ResponseEntity;
 
@@ -13,7 +12,7 @@ public interface ParkService {
 
     ResponseEntity<Errors> insertSelective(ParkDTO recordDTO);
 
-    ResponseEntity<Errors> insertSelectiveForMember(ParkInsertSelectiveForMember bean);
+    ResponseEntity<Errors> insertSelectiveForMember(ParkDTO recordDTO, AdminDTO adminDTO);
 
     ResponseEntity<Park> selectByPrimaryKey(Integer id);
 

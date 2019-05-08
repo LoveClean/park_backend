@@ -11,9 +11,9 @@ import com.springboot.framework.vo.AppDetailVO;
 import java.util.List;
 
 public interface AppService {
-    ResponseEntity<Integer> deleteByPrimaryKey(AppDTO recordDTO);
+    ResponseEntity<Errors> deleteByPrimaryKey(AppDTO recordDTO);
 
-    ResponseEntity<Integer> insertSelective(AppDTO recordDTO);
+    ResponseEntity<Errors> insertSelective(AppDTO recordDTO);
 
     ResponseEntity<AppDetailVO> selectByPrimaryKey(Integer id);
 
@@ -23,12 +23,12 @@ public interface AppService {
 
     ResponseEntity<List<App>> selectList();
 
-    ResponseEntity<Integer> updateByPrimaryKeySelective(AppDTO recordDTO);
+    ResponseEntity<Errors> updateByPrimaryKeySelective(AppDTO recordDTO);
 
     ResponseEntity<Errors> updateStatus(AppDTO recordDTO);
 
     /////////////////应用详情/////////////////
     ResponseEntity<Object> selectByPrimaryKeyForDetail(Integer appId, Integer parkId);
 
-    ResponseEntity<Integer> updateByPrimaryKeySelectiveForDetail(AppDetail record);
+    ResponseEntity<Errors> updateByPrimaryKeySelectiveForDetail(AppDetail record);
 }

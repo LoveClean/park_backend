@@ -32,15 +32,21 @@ public class AppServiceImpl implements AppService {
     private ConnectionMapper connectionMapper;
 
     @Override
-    public ResponseEntity<Integer> deleteByPrimaryKey(AppDTO recordDTO) {
+    public ResponseEntity<Errors> deleteByPrimaryKey(AppDTO recordDTO) {
         appDetailMapper.deleteByAppId(recordDTO.getId());
         connectionMapper.deleteByAppId(recordDTO.getId());
-        return ResponseEntityUtil.success(appMapper.deleteByPrimaryKey(recordDTO.getId(), recordDTO.getUpdateBy()));
+        //3.响应校验
+        if (appMapper.deleteByPrimaryKey(recordDTO.getId(), recordDTO.getUpdateBy()) == 0) {
+            return ResponseEntityUtil.fail("删除失败");
+        }
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
-    public ResponseEntity<Integer> insertSelective(AppDTO recordDTO) {
+    public ResponseEntity<Errors> insertSelective(AppDTO recordDTO) {
+        //2.创建entity
         App record = new App(recordDTO);
+        //3.响应校验
         if (appMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("应用添加失败");
         }
@@ -49,7 +55,7 @@ public class AppServiceImpl implements AppService {
         if (parkIds.length > 0) {
             connectionForApp(appId, parkIds);
         }
-        return ResponseEntityUtil.success();
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
@@ -91,7 +97,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResponseEntity<Integer> updateByPrimaryKeySelective(AppDTO recordDTO) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelective(AppDTO recordDTO) {
         //2.创建entity
         App record = new App(recordDTO);
         //3.响应校验
@@ -110,7 +116,7 @@ public class AppServiceImpl implements AppService {
                 appDetailMapper.deleteByParkIdAndAppId(parkId3, appId);
             }
         }
-        return ResponseEntityUtil.success();
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     @Override
@@ -130,11 +136,11 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResponseEntity<Integer> updateByPrimaryKeySelectiveForDetail(AppDetail record) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelectiveForDetail(AppDetail record) {
         if (appDetailMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("应用详情更新失败");
         }
-        return ResponseEntityUtil.success();
+        return ResponseEntityUtil.success(Errors.SUCCESS);
     }
 
     private void connectionForApp(Integer appId, Integer[] parkIds) {

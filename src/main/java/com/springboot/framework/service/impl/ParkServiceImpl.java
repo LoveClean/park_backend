@@ -68,28 +68,30 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public ResponseEntity<Errors> insertSelectiveForMember(ParkInsertSelectiveForMember bean) {
-        ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
+    public ResponseEntity<Errors> insertSelectiveForMember(ParkDTO recordDTO, AdminDTO adminDTO) {
+        //1.请求校验
+        if (adminMapper.selectByPhone(adminDTO.getPhone()) != null) {
+            return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
+        }
+        if (adminMapper.selectByAccount(adminDTO.getAccount()) != null) {
+            return ResponseEntityUtil.fail("此用户名已被注册");
+        }
+        //2.创建entityPark
         Park record = new Park(recordDTO);
         record.setStatus((byte) 0);
+        //3.响应校验
         if (parkMapper.selectByName(record.getName()) != null) {
             return ResponseEntityUtil.fail("此园区已申请注册");
         }
         if (parkMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
-        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", record.getId());
+        //2.创建entityAdmin
         Admin admin = new Admin(adminDTO);
+        admin.setParkId(record.getId());
         admin.setStatus((byte) 0);
-        //校验
-        if (adminMapper.selectByPhone(admin.getPhone()) != null) {
-            return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
-        }
-        if (adminMapper.selectByAccount(admin.getAccount()) != null) {
-            return ResponseEntityUtil.fail("此用户名已被注册");
-        }
-        //密码通过MD5加密
-        admin.setPassword(MD5Util.MD5(admin.getPassword()));
+        admin.setPassword(MD5Util.MD5(admin.getPassword())); //密码通过MD5加密
+        //3.响应校验
         int resultCount = adminMapper.insertSelective(admin);
         if (resultCount == 0) {
             return ResponseEntityUtil.fail("管理员申请失败");

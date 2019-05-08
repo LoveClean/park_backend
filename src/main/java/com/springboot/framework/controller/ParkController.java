@@ -8,6 +8,7 @@ import com.springboot.framework.controller.request.ParkUpdateSelective;
 import com.springboot.framework.controller.request.UpdateByStatus;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Park;
+import com.springboot.framework.dto.AdminDTO;
 import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.service.ParkService;
 import com.springboot.framework.util.ResponseEntity;
@@ -43,7 +44,9 @@ public class ParkController extends BaseController {
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
     @PostMapping(value = "insertSelectiveForMember")
     public ResponseEntity<Errors> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
-        return parkService.insertSelectiveForMember(bean);
+        ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
+        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", null);
+        return parkService.insertSelectiveForMember(recordDTO,adminDTO);
     }
 
     @ApiOperation(value = "查看", notes = "查看园区")

@@ -8,6 +8,7 @@ import com.springboot.framework.dao.entity.HousePicture;
 import com.springboot.framework.dao.mapper.HouseMapper;
 import com.springboot.framework.dao.mapper.HousePictureMapper;
 import com.springboot.framework.service.HouseAppService;
+import com.springboot.framework.util.PageUtil;
 import com.springboot.framework.util.ResponseEntity;
 import com.springboot.framework.util.ResponseEntityUtil;
 import org.springframework.stereotype.Service;
@@ -31,12 +32,7 @@ public class HouseAppServiceImpl implements HouseAppService {
     public PageResponseBean selectListByParkId(int pageNum, int pageSize, Integer parkId) {
         PageHelper.startPage(pageNum, pageSize);
         List<House> houseList = houseMapper.selectListByParkId(parkId);
-        PageInfo pageInfo = new PageInfo(houseList);
-
-        PageResponseBean bean = new PageResponseBean(pageInfo);
-        bean.setCode(0);
-        bean.setHttpStatus(200);
-        return bean;
+        return PageUtil.page(houseList);
     }
 
     @Override

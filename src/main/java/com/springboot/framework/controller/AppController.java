@@ -31,14 +31,14 @@ public class AppController extends BaseController {
 
     @ApiOperation(value = "删除", notes = "删除应用")
     @DeleteMapping(value = "deleteByPrimaryKey")
-    public ResponseEntity<Integer> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
+    public ResponseEntity<Errors> deleteByPrimaryKey(@RequestParam Integer id, HttpServletRequest request) {
         AppDTO recordDTO = new AppDTO(id, super.getSessionUser(request).getAccount());
         return appService.deleteByPrimaryKey(recordDTO);
     }
 
     @ApiOperation(value = "新增", notes = "新增应用")
     @PostMapping(value = "insertSelective")
-    public ResponseEntity<Integer> insertSelective(@RequestBody AppInsertSelective bean, HttpServletRequest request) {
+    public ResponseEntity<Errors> insertSelective(@RequestBody AppInsertSelective bean, HttpServletRequest request) {
         AppDTO recordDTO = new AppDTO(bean.getName(), bean.getIcon(), bean.getSort(), super.getSessionUser(request).getName(), bean.getParkIds());
         return appService.insertSelective(recordDTO);
     }
@@ -80,7 +80,7 @@ public class AppController extends BaseController {
 
     @ApiOperation(value = "更新", notes = "更新应用")
     @PutMapping(value = "updateByPrimaryKeySelective")
-    public ResponseEntity<Integer> updateByPrimaryKeySelective(@RequestBody AppUpdateSelective bean, HttpServletRequest request) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelective(@RequestBody AppUpdateSelective bean, HttpServletRequest request) {
         AppDTO recordDTO = new AppDTO(bean.getAppId(), bean.getName(), bean.getIcon(), bean.getSort(), super.getSessionUser(request).getName(), bean.getParkIds2(), bean.getParkIds3());
         return appService.updateByPrimaryKeySelective(recordDTO);
     }
@@ -102,7 +102,7 @@ public class AppController extends BaseController {
 
     @ApiOperation(value = "更新应用详情", notes = "更新应用详情")
     @PutMapping(value = "updateByPrimaryKeySelectiveForDetail")
-    public ResponseEntity<Integer> updateByPrimaryKeySelectiveForDetail(@RequestBody AppDetailUpdateSelective bean, HttpServletRequest request) {
+    public ResponseEntity<Errors> updateByPrimaryKeySelectiveForDetail(@RequestBody AppDetailUpdateSelective bean, HttpServletRequest request) {
         AppDetail record = new AppDetail(bean.getId(), bean.getCover(), bean.getAddress(), bean.getPrice(), bean.getModel(), bean.getColor(), bean.getContact(), bean.getDescription(), bean.getIntroduction(), bean.getStatus(), bean.getContent());
         return appService.updateByPrimaryKeySelectiveForDetail(record);
     }
@@ -130,7 +130,7 @@ public class AppController extends BaseController {
 
     @ApiOperation(value = "更新应用详情改", notes = "更新应用详情")
     @PutMapping(value = "updateParkAppInfo")
-    public ResponseEntity<Integer> updateParkAppInfo(@RequestBody ParkAppUpdateRequestBean bean, HttpServletRequest request) {
+    public ResponseEntity<Errors> updateParkAppInfo(@RequestBody ParkAppUpdateRequestBean bean, HttpServletRequest request) {
         String contact = JSON.toJSONString(bean.getContact());
         AppDetail record = new AppDetail(bean.getId(), bean.getCover(), bean.getAddress(), bean.getPrice(), bean.getModel(), bean.getColor(), contact, bean.getDescription(), bean.getIntroduction(), bean.getStatus(), bean.getContent());
         return appService.updateByPrimaryKeySelectiveForDetail(record);
