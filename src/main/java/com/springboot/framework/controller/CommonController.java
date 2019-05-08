@@ -42,8 +42,7 @@ public class CommonController {
 
     @Resource
     private AppConfig appConfig;
-    //	@Resource
-//	private MobileCaptchaService mobileCaptchaService;
+
     @Resource
     private RedisService redisService;
 
@@ -113,24 +112,7 @@ public class CommonController {
         }
     }
 
-//    /**
-//     * 验证验证码
-//     *
-//     * @param bean
-//     * @return
-//     */
-//	@ApiOperation(value = "验证短信验证码", notes = "校验验证码，手机号、验证码与type类型：1注册,2修改密码,3重置密码")
-//	@RequestMapping(value = "/sms/verifyCaptcha", method = RequestMethod.POST)
-//	public ResponseEntity<Boolean> verifyCaptcha(@Valid @RequestBody CaptchaVerifyRequestBean bean) {
-//		boolean result = false;
-//		try {
-//			result = mobileCaptchaService.verify(bean.getMobile(), bean.getCaptcha(),
-//					SmsCaptchaType.getSmsCaptchaType((byte) bean.getType()));
-//		} catch (BusinessException e) {
-//			ExceptionUtil.throwException(Errors.SYSTEM_CUSTOM_ERROR.code, e.toString());
-//		}
-//		return ResponseEntity.ok(result);
-//	}
+
 
     @ACS(allowAnonymous = true)
     @ApiOperation(value = "图片验证码接口", notes = "随机验证码")

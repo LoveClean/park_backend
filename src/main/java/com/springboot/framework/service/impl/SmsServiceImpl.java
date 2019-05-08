@@ -1,7 +1,7 @@
 package com.springboot.framework.service.impl;
 
 
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.contants.Errors;
 import com.springboot.framework.service.SmsService;
 import com.springboot.framework.util.ExceptionUtil;
 import com.springboot.framework.util.HwSendSmsUtil;

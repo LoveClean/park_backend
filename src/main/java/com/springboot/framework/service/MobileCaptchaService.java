@@ -28,6 +28,7 @@ public interface MobileCaptchaService {
    * @param mobile 手机号
    * @param captcha 验证码
    * @param type 类型:1注册,2修改密码,3找回密码
+   * @return 验证结果 true通过 false不通过
    */
   boolean verify(String mobile, String captcha, SmsCaptchaType type);
 }

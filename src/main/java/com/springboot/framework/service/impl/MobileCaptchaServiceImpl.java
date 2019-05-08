@@ -53,9 +53,9 @@ public class MobileCaptchaServiceImpl implements MobileCaptchaService {
    */
   @Override
   public CaptchaResponseBean send(CaptchaRequestBean bean , HttpServletRequest request) {
-    // 发送前验证
+    // 发送前验证request
     sendVidate(bean);
-    // 随机6位验证码数字
+    // 随机生成6位验证码数字
     String captcha = StringUtil.random(6);
     // 放入缓存
     MobileCaptchaCache mobileCaptcha = new MobileCaptchaCache();
@@ -67,15 +67,40 @@ public class MobileCaptchaServiceImpl implements MobileCaptchaService {
           logger.error("发送验证码失败,{}");
           ExceptionUtil.throwException(3, "发送失败请稍后再试");
         }
+
+    // 封装返回数据 冷却时间 有效时间
     CaptchaResponseBean responseBean = new CaptchaResponseBean();
     responseBean.setValidSeconds(SmsConstants.SMS_VALID_TIME);
     responseBean.setCoolSeconds(SmsConstants.SMS_COOL_TIME);
     return responseBean;
   }
 
+
+  /**
+   * 验证码验证
+   * 
+   * @param mobile 手机号
+   * @param captcha 验证码
+   * @param type 类型:1注册,2修改密码,3找回密码
+   */
+  @Override
+  public boolean verify(String mobile, String captcha, SmsConstants.SmsCaptchaType type) {
+    String captchaKey = captchaKey(type.code, mobile);
+    String mobileCaptchaJson = (String) redisUtil.get(captchaKey);
+    if (StringUtil.isBlank(mobileCaptchaJson)) {
+      ExceptionUtil.throwException(Errors.CAPTCHA_IS_NULL.code, "未发送验证码");
+    }
+    MobileCaptchaCache mobileCaptcha = JSON.parseObject(mobileCaptchaJson, MobileCaptchaCache.class);
+    if (!mobileCaptcha.getCaptcha().equals(captcha)) {
+      ExceptionUtil.throwException(Errors.CAPTCHA_ERROR.code, "验证码有误");
+    }
+    redisUtil.del(captchaKey);
+    return true;
+  }
+
   /**
    * 验证码缓存key
-   * 
+   *
    * @param type
    * @param mobile
    * @return groupId_SMS_CAPTCHA_type_mobile
@@ -85,8 +110,8 @@ public class MobileCaptchaServiceImpl implements MobileCaptchaService {
   }
 
   /**
-   * 发送验证,手机号是否注册、是否发送频繁等
-   * 
+   * 发送前验证,手机号是否注册、是否发送频繁等
+   *
    * @param bean
    */
   private void sendVidate(CaptchaRequestBean bean) {
@@ -116,28 +141,6 @@ public class MobileCaptchaServiceImpl implements MobileCaptchaService {
     if (seconds < SmsConstants.SMS_COOL_TIME) {
       ExceptionUtil.throwException(Errors.SYSTEM_CUSTOM_ERROR.code, "请求太过频繁，请稍后再试");
     }
-  }
-
-  /**
-   * 验证码验证
-   * 
-   * @param mobile 手机号
-   * @param captcha 验证码
-   * @param type 类型:1注册,2修改密码,3找回密码
-   */
-  @Override
-  public boolean verify(String mobile, String captcha, SmsConstants.SmsCaptchaType type) {
-    String captchaKey = captchaKey(type.code, mobile);
-    String mobileCaptchaJson = (String) redisUtil.get(captchaKey);
-    if (StringUtil.isBlank(mobileCaptchaJson)) {
-      ExceptionUtil.throwException(Errors.CAPTCHA_IS_NULL.code, "未发送验证码");
-    }
-    MobileCaptchaCache mobileCaptcha = JSON.parseObject(mobileCaptchaJson, MobileCaptchaCache.class);
-    if (!mobileCaptcha.getCaptcha().equals(captcha)) {
-      ExceptionUtil.throwException(Errors.CAPTCHA_ERROR.code, "验证码有误");
-    }
-    redisUtil.del(captchaKey);
-    return true;
   }
 
 }
