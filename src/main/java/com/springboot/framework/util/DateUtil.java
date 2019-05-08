@@ -42,9 +42,6 @@ public class DateUtil {
 
 	/**
 	 * 转成默认格式yyyy-MM-dd HH:mm:ss
-	 * 
-	 * @param date
-	 * @return
 	 */
 	public static String format(Date date) {
 		if (date == null) {
@@ -55,10 +52,6 @@ public class DateUtil {
 
 	/**
 	 * 将Date类型的日期转换为参数定义的格式的字符串。
-	 * 
-	 * @param date
-	 * @param pattern
-	 * @return
 	 */
 	public static String format(Date date, String pattern) {
 		if (date == null || pattern == null) {
@@ -92,9 +85,6 @@ public class DateUtil {
 
 	/**
 	 * 封装开始时间
-	 * 
-	 * @param date
-	 * @return
 	 */
 	public static Date beginDate(Date date) {
 		if (null == date) {
@@ -111,9 +101,6 @@ public class DateUtil {
 
 	/**
 	 * 封装结束时间
-	 * 
-	 * @param date
-	 * @return
 	 */
 	public static Date endDate(Date date) {
 		if (null == date) {
@@ -129,10 +116,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * @param nowDate
-	 * @param day
-	 *            负数表示减
-	 * @return
+	 * 负数表示减
 	 */
 	public static Date addDateByDay(Date nowDate, int day) {
 		Calendar calendar = getCalendarInstance();
@@ -142,10 +126,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * @param nowDate
-	 * @param hour
-	 *            负数表示减
-	 * @return
+	 * 负数表示减
 	 */
 	public static Date addDateByHour(Date nowDate, int hour) {
 		Calendar calendar = getCalendarInstance();
@@ -156,9 +137,6 @@ public class DateUtil {
 
 	/**
 	 * 添加秒
-	 * @param nowDate
-	 * @param secod
-	 * @return
 	 */
 	public static Date addDateBySecond(Date nowDate, int secod) {
 		Calendar calendar = getCalendarInstance();
@@ -169,9 +147,6 @@ public class DateUtil {
 
 	/**
 	 * String转Date
-	 * 
-	 * @param strDate
-	 * @return
 	 */
 	public static Date stringToDate(String strDate, String pattern) {
 		if (null == strDate) {
@@ -188,8 +163,6 @@ public class DateUtil {
 
 	/**
 	 * 上周一统计开始时间00:00:00
-	 * 
-	 * @return
 	 */
 	public static Date lastMonday() {
 		Calendar cal = Calendar.getInstance();
@@ -207,8 +180,6 @@ public class DateUtil {
 
 	/**
 	 * 上周日统计结束时间 12:00:00
-	 * 
-	 * @return
 	 */
 	public static Date lastSundayNoon() {
 		Calendar cal = Calendar.getInstance();
@@ -225,8 +196,6 @@ public class DateUtil {
 
 	/**
 	 * 当天开始时间
-	 * 
-	 * @return
 	 */
 	public static Date getTodayStart() {
 		Calendar todayStart = Calendar.getInstance();
@@ -239,8 +208,6 @@ public class DateUtil {
 
 	/**
 	 * 当天结束时间
-	 * 
-	 * @return
 	 */
 	public static Date getTodayEnd() {
 		Calendar todayEnd = Calendar.getInstance();
