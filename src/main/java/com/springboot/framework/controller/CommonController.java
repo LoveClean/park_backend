@@ -35,7 +35,7 @@ import java.util.Random;
  * @Description: 工具controller
  * @date 2019年4月28日
  */
-@Api(description = "公共模块", produces = "application/json")
+@Api(tags = {"公共模块"}, produces = "application/json")
 @RestController
 @RequestMapping("/common/")
 public class CommonController {
@@ -101,12 +101,12 @@ public class CommonController {
             value = "发送短信验证码",
             notes = "type类型：1注册,2修改密码,3重置密码,4注册+登陆,5绑定卡<br/>有效时间5分钟，相同类型发送冷却时间1分钟<br/>返回：code=0成功；code=1手机号有误;code=2未超过发送冷却时间，exception=剩余发送冷却时间(单位秒)；code=3送失败请稍后再试")
     @PostMapping(value = "/sms/sendCaptcha")
-    public ResponseEntity<CaptchaResponseBean> sendCaptcha(@Valid @RequestBody CaptchaRequestBean bean, BindingResult bindingResult , HttpServletRequest request) {
-        if(bindingResult.hasErrors()){
+    public ResponseEntity<CaptchaResponseBean> sendCaptcha(@Valid @RequestBody CaptchaRequestBean bean, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
             return ResponseEntityUtil.fail(bindingResult.getFieldError().getDefaultMessage());
         }
         try {
-            CaptchaResponseBean result = mobileCaptchaService.send(bean ,request);
+            CaptchaResponseBean result = mobileCaptchaService.send(bean, request);
             return ResponseEntityUtil.success(result);
         } catch (BusinessException e) {
             return ResponseEntityUtil.fail(e.getCode(), e.getMessage());

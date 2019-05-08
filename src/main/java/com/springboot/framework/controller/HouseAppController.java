@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Author SWF
  * @Date 2019/4/25 10:08
  **/
-@Api(description = "租房应用", produces = "application/json")
+@Api(tags = {"租房应用"}, produces = "application/json")
 @RestController
 @RequestMapping("/houseApp/")
 public class HouseAppController extends BaseController {
@@ -68,6 +68,6 @@ public class HouseAppController extends BaseController {
         House house = new House();
         BeanUtils.copyProperties(bean, house);
         house.setUpdateBy(super.getSessionUser(request).getName());
-        return houseAppService.update(house, bean.getNewImg(),bean.getDelImg());
+        return houseAppService.update(house, bean.getNewImg(), bean.getDelImg());
     }
 }

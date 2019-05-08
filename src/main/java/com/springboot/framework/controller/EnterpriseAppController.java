@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Author SWF
  * @Date 2019/5/5 17:19
  **/
-@Api(description = "企业管理应用", produces = "application/json")
+@Api(tags = {"企业管理应用"}, produces = "application/json")
 @RestController
 @RequestMapping("/enterprise/")
 public class EnterpriseAppController extends BaseController {
@@ -46,18 +46,19 @@ public class EnterpriseAppController extends BaseController {
     public ResponseEntity<Object> insert(@RequestBody EnterpriseInsertRequestBean bean, HttpServletRequest request) {
         Enterprise enterprise = new Enterprise();
         BeanUtils.copyProperties(bean, enterprise);
-        enterprise.setBeginDate(DateUtil.stringToDate(bean.getBeginDate(),DateUtil.yyyy_MM_dd));
+        enterprise.setBeginDate(DateUtil.stringToDate(bean.getBeginDate(), DateUtil.yyyy_MM_dd));
         Admin admin = super.getSessionUser(request);
         enterprise.setCreateBy(admin.getName());
         return enterpriseAppService.insert(enterprise);
     }
+
     // 修改
     @ApiOperation(value = "修改企业", notes = "修改企业")
     @PostMapping(value = "update")
     public ResponseEntity<Object> update(@RequestBody EnterpriseUpdateRequestBean bean, HttpServletRequest request) {
         Enterprise enterprise = new Enterprise();
         BeanUtils.copyProperties(bean, enterprise);
-        enterprise.setBeginDate(DateUtil.stringToDate(bean.getBeginDate(),DateUtil.yyyy_MM_dd));
+        enterprise.setBeginDate(DateUtil.stringToDate(bean.getBeginDate(), DateUtil.yyyy_MM_dd));
         enterprise.setUpdateBy(super.getSessionUser(request).getName());
         return enterpriseAppService.update(enterprise);
     }

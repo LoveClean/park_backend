@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-@Api(description = "园区操作接口", produces = "application/json")
+@Api(tags = {"园区操作接口"}, produces = "application/json")
 @RestController
 @RequestMapping("/park/")
 public class ParkController extends BaseController {
@@ -46,7 +46,7 @@ public class ParkController extends BaseController {
     public ResponseEntity<Errors> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
         ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
         AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", null);
-        return parkService.insertSelectiveForMember(recordDTO,adminDTO);
+        return parkService.insertSelectiveForMember(recordDTO, adminDTO);
     }
 
     @ApiOperation(value = "查看", notes = "查看园区")

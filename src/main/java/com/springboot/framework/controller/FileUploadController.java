@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @SuppressWarnings("restriction")
-@Api(description = "文件上传", produces = "application/json")
+@Api(tags = {"文件上传"}, produces = "application/json")
 @RestController
 @RequestMapping("/file")
 public class FileUploadController {

@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Api(description = "园区应用连接操作接口", produces = "application/json")
+@Api(tags = {"园区应用连接操作接口"}, produces = "application/json")
 @RestController
 @RequestMapping("/connection/")
 public class ConnectionController {

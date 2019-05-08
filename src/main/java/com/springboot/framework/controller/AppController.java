@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Api(description = "应用操作接口", produces = "application/json")
+@Api(tags = {"应用操作接口"}, produces = "application/json")
 @RestController
 @RequestMapping("/app/")
 public class AppController extends BaseController {
