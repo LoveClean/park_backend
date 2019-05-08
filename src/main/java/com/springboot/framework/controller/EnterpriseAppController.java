@@ -18,18 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.unit.DataUnit;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @Author SWF
- * @Date 2019/5/5 17:19
- **/
 @Api(tags = {"企业管理应用"}, produces = "application/json")
 @RestController
 @RequestMapping("/enterprise/")
 public class EnterpriseAppController extends BaseController {
 
-    @Autowired
+    @Resource
     private EnterpriseAppServiceImpl enterpriseAppService;
 
     // 分页查询
