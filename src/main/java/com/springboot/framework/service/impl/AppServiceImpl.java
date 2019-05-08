@@ -92,7 +92,9 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResponseEntity<Integer> updateByPrimaryKeySelective(AppDTO recordDTO) {
+        //2.创建entity
         App record = new App(recordDTO);
+        //3.响应校验
         if (appMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("应用更新失败");
         }
