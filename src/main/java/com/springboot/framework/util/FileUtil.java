@@ -19,8 +19,6 @@ public class FileUtil {
 
   /**
    * 获取文件分隔符
-   * 
-   * @return
    */
   public static String getFileSeparator() {
     return File.separator;
@@ -36,9 +34,6 @@ public class FileUtil {
 
   /**
    * 读取内容
-   * 
-   * @param in
-   * @return
    */
   public static String readString(InputStream in) {
     if (in == null) {
@@ -84,10 +79,6 @@ public class FileUtil {
 
   /**
    * 加载配置oss文件
-   * 
-   * @param filePath
-   * @return
-   * @throws IOException
    */
   public static Map<String, String> loadFileProperties(String filePath) throws IOException {
     if (null == filePath || "".equals(filePath.trim())) {
