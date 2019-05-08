@@ -19,12 +19,13 @@ import javax.servlet.http.HttpServletRequest;
  * 基础的控制器，如对Token的操作等..
  *
  * @author haungpengfei
- * @version 1.1.0315
+ * @version 1.2
  * @since 2019/1/10
+ * @date 2019/5/8
  */
 @RestController
 @RequestMapping("/")
-public class BaseController {
+public abstract class BaseController {
     protected static Logger logger = LoggerFactory.getLogger(BaseController.class);
     @Resource
     protected RedisTokenService redisTokenService;
