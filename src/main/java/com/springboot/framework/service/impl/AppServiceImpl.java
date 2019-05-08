@@ -137,6 +137,7 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResponseEntity<Errors> updateByPrimaryKeySelectiveForDetail(AppDetail record) {
+        //3.响应校验
         if (appDetailMapper.updateByPrimaryKeySelective(record) != 1) {
             return ResponseEntityUtil.fail("应用详情更新失败");
         }
