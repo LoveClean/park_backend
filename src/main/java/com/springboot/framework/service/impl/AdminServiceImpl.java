@@ -1,7 +1,7 @@
 package com.springboot.framework.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.springboot.framework.contants.Errors;
+import com.springboot.framework.contant.Errors;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.dao.mapper.AdminMapper;

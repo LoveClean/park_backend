@@ -1,7 +1,7 @@
 package com.springboot.framework.interceptor;
 
 import com.springboot.framework.annotation.ACS;
-import com.springboot.framework.contants.Errors;
+import com.springboot.framework.contant.Errors;
 import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.service.RedisTokenService;
 import com.springboot.framework.util.ExceptionUtil;

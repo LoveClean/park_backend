@@ -3,8 +3,8 @@ package com.springboot.framework.service.impl;
 import com.alibaba.fastjson.JSON;
 
 import com.springboot.framework.cache.MobileCaptchaCache;
-import com.springboot.framework.contants.Errors;
-import com.springboot.framework.contants.SmsConstants;
+import com.springboot.framework.contant.Errors;
+import com.springboot.framework.contant.SmsConstants;
 import com.springboot.framework.controller.request.CaptchaRequestBean;
 import com.springboot.framework.controller.response.CaptchaResponseBean;
 import com.springboot.framework.service.AdminService;

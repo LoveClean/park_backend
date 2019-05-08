@@ -1,7 +1,7 @@
 package com.springboot.framework.exception;
 
 
-import com.springboot.framework.contants.Errors;
+import com.springboot.framework.contant.Errors;
 
 /**
  * <pre>

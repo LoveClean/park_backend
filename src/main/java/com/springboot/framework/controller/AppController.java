@@ -2,7 +2,7 @@ package com.springboot.framework.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.springboot.framework.annotation.ACS;
-import com.springboot.framework.contants.Errors;
+import com.springboot.framework.contant.Errors;
 import com.springboot.framework.controller.request.*;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.App;

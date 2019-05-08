@@ -1,7 +1,7 @@
 package com.springboot.framework.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.springboot.framework.contants.Const;
+import com.springboot.framework.contant.Const;
 import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.service.RedisTokenService;
 import com.springboot.framework.util.RedisUtil;

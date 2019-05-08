@@ -2,7 +2,7 @@ package com.springboot.framework.util;
 
 
 
-import com.springboot.framework.contants.Errors;
+import com.springboot.framework.contant.Errors;
 
 import javax.servlet.http.HttpServletRequest;
 
