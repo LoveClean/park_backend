@@ -33,8 +33,7 @@ public class EnterpriseAppController extends BaseController {
     @ApiOperation(value = "列表查看", notes = "列表查看")
     @GetMapping(value = "selectList")
     public PageResponseBean selectListByParkId(@RequestParam int pageNum, @RequestParam int pageSize, @RequestParam Integer parkId) {
-        PageResponseBean page = enterpriseAppService.selectListByParkId(pageNum, pageSize, parkId);
-        return page;
+        return enterpriseAppService.selectListByParkId(pageNum, pageSize, parkId);
     }
 
     // 新增
