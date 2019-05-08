@@ -7,7 +7,7 @@ import com.obs.services.ObsClient;
 import com.obs.services.model.ObjectMetadata;
 import com.obs.services.model.ObsObject;
 import com.springboot.framework.config.OBSConfig;
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.constant.Errors;
 import com.springboot.framework.service.OBSService;
 import com.springboot.framework.util.ExceptionUtil;
 import com.springboot.framework.util.FileUtil;

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.config.AppConfig;
-import com.springboot.framework.contant.Const;
+import com.springboot.framework.constant.Const;
 import com.springboot.framework.controller.request.CaptchaRequestBean;
 import com.springboot.framework.controller.response.CaptchaResponseBean;
 import com.springboot.framework.exception.BusinessException;

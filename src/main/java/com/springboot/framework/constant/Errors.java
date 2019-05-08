@@ -1,4 +1,4 @@
-package com.springboot.framework.contant;
+package com.springboot.framework.constant;
 
 /**
  * 错误码（400-599 禁止使用）

@@ -1,6 +1,6 @@
 package com.springboot.framework.interceptor;
 
-import com.springboot.framework.contant.Const;
+import com.springboot.framework.constant.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;

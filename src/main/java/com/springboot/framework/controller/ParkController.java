@@ -1,7 +1,7 @@
 package com.springboot.framework.controller;
 
 import com.springboot.framework.annotation.ACS;
-import com.springboot.framework.contant.Errors;
+import com.springboot.framework.constant.Errors;
 import com.springboot.framework.controller.request.ParkInsertSelective;
 import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
 import com.springboot.framework.controller.request.ParkUpdateSelective;
