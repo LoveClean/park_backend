@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -25,13 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/")
 public class BaseController {
     protected static Logger logger = LoggerFactory.getLogger(BaseController.class);
-    @Autowired
+    @Resource
     protected RedisTokenService redisTokenService;
 
     /**
      * 获取真实ip
-     *
-     * @param request
      */
     public String getRemoteIP(HttpServletRequest request) {
         if (request.getHeader("x-forwarded-for") == null) {
@@ -42,8 +41,6 @@ public class BaseController {
 
     /**
      * protected
-     *
-     * @param request
      */
     protected String generateAccessToken(HttpServletRequest request) {
         return request.getSession().getId() + StringUtil.uuidNotLine();
@@ -52,8 +49,6 @@ public class BaseController {
 
     /**
      * 获得 AccessToken
-     *
-     * @param request
      */
     protected String getAccessToken(HttpServletRequest request) {
         return request.getHeader(Const.ACCESS_TOKEN_HEADER_NAME);
@@ -61,9 +56,6 @@ public class BaseController {
 
     /**
      * 设置登录权限的token
-     *
-     * @param request
-     * @param accessToken
      */
     protected void setAccessTokenAttribute(HttpServletRequest request, String accessToken) {
         request.setAttribute(Const.ACCESS_TOKEN_HEADER_NAME, accessToken);
@@ -71,9 +63,6 @@ public class BaseController {
 
     /**
      * 缓存用户信息
-     *
-     * @param request
-     * @param user
      */
     protected void setSessionUser(HttpServletRequest request, Admin user) {
         redisTokenService.getToken(user);
