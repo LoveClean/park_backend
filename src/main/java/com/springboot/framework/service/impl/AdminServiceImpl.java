@@ -1,22 +1,28 @@
 package com.springboot.framework.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.springboot.framework.constant.Errors;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Admin;
 import com.springboot.framework.dao.mapper.AdminMapper;
+import com.springboot.framework.dao.mapper.ParkMapper;
 import com.springboot.framework.dto.AdminDTO;
 import com.springboot.framework.service.AdminService;
 import com.springboot.framework.util.*;
+import com.springboot.framework.vo.AdminVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService {
     @Resource
     private AdminMapper adminMapper;
+    @Resource
+    private ParkMapper parkMapper;
 
     @Override
     public ResponseEntity<Errors> deleteByPrimaryKey(AdminDTO recordDTO) {
@@ -80,7 +86,16 @@ public class AdminServiceImpl implements AdminService {
     public PageResponseBean selectList(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Admin> adminList = adminMapper.selectList();
-        return PageUtil.page(adminList);
+        List<AdminVO> adminVOList = Lists.newArrayList();
+        for (Admin admin : adminList) {
+            String parkName = null;
+            if (admin.getParkId() != null) {
+                parkName = parkMapper.selectByPrimaryKey(admin.getParkId()).getName();
+            }
+            AdminVO adminVO = new AdminVO(admin, parkName);
+            adminVOList.add(adminVO);
+        }
+        return PageUtil.page(adminList, adminVOList);
     }
 
     @Override

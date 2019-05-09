@@ -32,7 +32,7 @@ public abstract class BaseController {
     /**
      * 获取真实ip
      */
-    public String getRemoteIP(HttpServletRequest request) {
+    protected String getRemoteIP(HttpServletRequest request) {
         if (request.getHeader("x-forwarded-for") == null) {
             return request.getRemoteAddr();
         }
