@@ -68,7 +68,7 @@ public class ParkController extends BaseController {
         return parkService.selectList(pageNum, pageSize);
     }
 
-    @ApiOperation(value = "根据parkId查看列表", notes = "根据parkId查看列表")
+    @ApiOperation(value = "根据AppId查看列表", notes = "根据AppId查看列表")
     @GetMapping(value = "selectListByAppId")
     public PageResponseBean selectListByAppId(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam Integer appId) {
         return parkService.selectListByAppId(pageNum, pageSize, appId);
