@@ -33,14 +33,6 @@ public class SwaggerConfig {
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts());
     }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("黄鹏飞-API").description("©2019 Copyright. Powered By 黄鹏飞.")
-                // .termsOfServiceUrl("")
-                .contact(new Contact("黄鹏飞", "", "641655770@qq.com")).license("Apache License Version 2.0")
-                .licenseUrl("https://github.com/springfox/springfox/blob/master/LICENSE").version("2.0").build();
-    }
-
     private List<ApiKey> securitySchemes() {
         List<ApiKey> apiKeyList = new ArrayList<>();
         apiKeyList.add(new ApiKey("Authorization", "X-Access-Auth-Token", "header"));
@@ -65,4 +57,12 @@ public class SwaggerConfig {
         securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
         return securityReferences;
     }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder().title("黄鹏飞-API").description("©2019 Copyright. Powered By 黄鹏飞.")
+                // .termsOfServiceUrl("")
+                .contact(new Contact("黄鹏飞", "", "641655770@qq.com")).license("Apache License Version 2.0")
+                .licenseUrl("https://github.com/springfox/springfox/blob/master/LICENSE").version("2.0").build();
+    }
+
 }

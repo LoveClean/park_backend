@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.annotation.Resource;
 
@@ -13,7 +14,7 @@ import javax.annotation.Resource;
  * @author jzsong@uworks.cc
  */
 @Configuration
-public class DefaultWebMvcConfigurerAdapter extends WebMvcConfigurationSupport {
+public class DefaultWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
 
   @Resource
   private ApplicationContext applicationContext;
