@@ -66,18 +66,11 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public ResponseEntity<Errors> insertSelectiveForMember(ParkDTO recordDTO, AdminDTO adminDTO) {
-        //1.请求校验
-        if (adminMapper.selectByPhone(adminDTO.getPhone()) != null) {
-            return ResponseEntityUtil.fail(Errors.USER_MOBILE_EXISTS);
-        }
-        if (adminMapper.selectByAccount(adminDTO.getAccount()) != null) {
-            return ResponseEntityUtil.fail("此用户名已被注册");
-        }
+    public ResponseEntity<Errors> apply(ParkDTO recordDTO, String adminPhone) {
         //2.创建entityPark
         Park record = new Park(recordDTO);
         record.setStatus((byte) 0);
-        //3.响应校验
+        //3.响应校验park
         if (parkMapper.selectByName(record.getName()) != null) {
             return ResponseEntityUtil.fail("此园区已申请注册");
         }
@@ -85,14 +78,12 @@ public class ParkServiceImpl implements ParkService {
             return ResponseEntityUtil.fail("园区添加失败");
         }
         //2.创建entityAdmin
-        Admin admin = new Admin(adminDTO);
+        Admin admin = adminMapper.selectByPhone(adminPhone);
         admin.setParkId(record.getId());
-        admin.setStatus((byte) 0);
-        admin.setPassword(MD5Util.MD5(admin.getPassword())); //密码通过MD5加密
-        //3.响应校验
-        int resultCount = adminMapper.insertSelective(admin);
+        //3.响应校验admin
+        int resultCount = adminMapper.updateByPrimaryKeySelective(admin);
         if (resultCount == 0) {
-            return ResponseEntityUtil.fail("管理员申请失败");
+            return ResponseEntityUtil.fail("异常错误，请联系管理员");
         }
         return ResponseEntityUtil.success();
     }

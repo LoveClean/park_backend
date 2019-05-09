@@ -3,12 +3,11 @@ package com.springboot.framework.controller;
 import com.springboot.framework.annotation.ACS;
 import com.springboot.framework.constant.Errors;
 import com.springboot.framework.controller.request.ParkInsertSelective;
-import com.springboot.framework.controller.request.ParkInsertSelectiveForMember;
+import com.springboot.framework.controller.request.ParkApply;
 import com.springboot.framework.controller.request.ParkUpdateSelective;
 import com.springboot.framework.controller.request.UpdateByStatus;
 import com.springboot.framework.controller.response.PageResponseBean;
 import com.springboot.framework.dao.entity.Park;
-import com.springboot.framework.dto.AdminDTO;
 import com.springboot.framework.dto.ParkDTO;
 import com.springboot.framework.service.ParkService;
 import com.springboot.framework.util.ResponseEntity;
@@ -42,11 +41,10 @@ public class ParkController extends BaseController {
 
     @ACS(allowAnonymous = true)
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
-    @PostMapping(value = "insertSelectiveForMember")
-    public ResponseEntity<Errors> insertSelectiveForMember(@RequestBody ParkInsertSelectiveForMember bean) {
+    @PostMapping(value = "apply")
+    public ResponseEntity<Errors> apply(@RequestBody ParkApply bean) {
         ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
-        AdminDTO adminDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getUserName(), "游客", null);
-        return parkService.insertSelectiveForMember(recordDTO, adminDTO);
+        return parkService.apply(recordDTO, bean.getAdminPhone());
     }
 
     @ApiOperation(value = "查看", notes = "查看园区")

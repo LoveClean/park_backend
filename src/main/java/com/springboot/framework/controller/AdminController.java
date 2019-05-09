@@ -39,14 +39,16 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "新增超级管理员", notes = "新增超级管理员")
     @PostMapping(value = "insertSelective")
     public ResponseEntity<Errors> insertSelective(@RequestBody AdminInsert bean, HttpServletRequest request) {
-        AdminDTO recordDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), null);
+        AdminDTO recordDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount());
         return adminService.insertSelective(recordDTO);
     }
 
-    @ApiOperation(value = "新增园区管理员", notes = "新增园区管理员")
-    @PostMapping(value = "insertSelectiveForParkId")
-    public ResponseEntity<Errors> insertSelectiveForParkId(@RequestBody AdminInsertForParkId bean, HttpServletRequest request) {
-        AdminDTO recordDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), bean.getName(), super.getSessionUser(request).getAccount(), bean.getParkId());
+    @ACS(allowAnonymous = true)
+    @ApiOperation(value = "游客申请园区管理员", notes = "游客申请园区管理员")
+    @PostMapping(value = "apply")
+    public ResponseEntity<Errors> apply(@RequestBody AdminApply bean) {
+        AdminDTO recordDTO = new AdminDTO(bean.getAccount(), bean.getPassword(), bean.getPhone(), null, "游客");
+        recordDTO.setStatus((byte) 0);
         return adminService.insertSelective(recordDTO);
     }
 

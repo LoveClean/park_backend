@@ -12,7 +12,7 @@ public interface ParkService {
 
     ResponseEntity<Errors> insertSelective(ParkDTO recordDTO);
 
-    ResponseEntity<Errors> insertSelectiveForMember(ParkDTO recordDTO, AdminDTO adminDTO);
+    ResponseEntity<Errors> apply(ParkDTO recordDTO, String adminPhone);
 
     ResponseEntity<Park> selectByPrimaryKey(Integer id);
 
