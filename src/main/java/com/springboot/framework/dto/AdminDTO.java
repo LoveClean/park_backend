@@ -31,13 +31,12 @@ public class AdminDTO {
     }
 
     //新增
-    public AdminDTO(String account, String password, String phone, String name, String createBy, Integer parkId) {
+    public AdminDTO(String account, String password, String phone, String name, String createBy) {
         this.account = account;
         this.password = password;
         this.phone = phone;
         this.name = name;
         this.createBy = createBy;
-        this.parkId = parkId;
     }
 
     //登陆

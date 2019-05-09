@@ -1,11 +1,9 @@
 package com.springboot.framework.controller.request;
 
-public class AdminInsertForParkId {
+public class AdminApply {
     private String account;
     private String password;
     private String phone;
-    private String name;
-    private Integer parkId;
 
     public String getAccount() {
         return account;
@@ -29,21 +27,5 @@ public class AdminInsertForParkId {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getParkId() {
-        return parkId;
-    }
-
-    public void setParkId(Integer parkId) {
-        this.parkId = parkId;
     }
 }
