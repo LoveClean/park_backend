@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Component
 public class AccessControlInterceptor extends HandlerInterceptorAdapter {
-    @Resource
+    @Autowired
     protected RedisTokenService redisTokenService;
 
     private static final List<String> noLoginResources = new ArrayList<String>() {

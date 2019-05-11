@@ -7,6 +7,7 @@ import com.springboot.framework.constant.Errors;
 import com.springboot.framework.constant.SmsConstants;
 import com.springboot.framework.controller.request.CaptchaRequestBean;
 import com.springboot.framework.controller.response.CaptchaResponseBean;
+import com.springboot.framework.dao.mapper.AdminMapper;
 import com.springboot.framework.service.AdminService;
 import com.springboot.framework.service.MobileCaptchaService;
 import com.springboot.framework.service.SmsService;
@@ -39,7 +40,7 @@ public class MobileCaptchaServiceImpl implements MobileCaptchaService {
   @Resource
   private RedisUtil redisUtil;
   @Resource
-  private AdminService userService;
+  private AdminMapper adminMapper;
 
 
 
@@ -115,20 +116,20 @@ public class MobileCaptchaServiceImpl implements MobileCaptchaService {
    * @param bean
    */
   private void sendVidate(CaptchaRequestBean bean) {
-    // 手机号验证在controller层验证
+    // 手机号格式验证在controller层验证
 
-//    // 注册 验证该手机号是否已存在
-//    if (bean.getType() == SmsConstants.SmsCaptchaType.REGIST.code) {
-//      if (!this.userService.checkPhone(bean.getMobile())) {
-//        ExceptionUtil.throwException(Errors.USER_MOBILE_EXISTS.code, "手机号已注册");
-//      }
-//    }
-//    // 修改密码
-//    else if (bean.getType() == SmsConstants.SmsCaptchaType.CHANGE_PWD.code) {
-//      if (this.userService.checkPhone(bean.getMobile())) {
-//        ExceptionUtil.throwException(Errors.USER_MOBILE_NOT_REGISTER.code, "手机号未注册");
-//      }
-//    }
+    // 注册 验证该手机号是否已存在
+    if (bean.getType() == SmsConstants.SmsCaptchaType.REGIST.code) {
+      if (null != adminMapper.selectByPhone(bean.getMobile())) {
+        ExceptionUtil.throwException(Errors.USER_MOBILE_EXISTS.code, "手机号已注册");
+      }
+    }
+    // 修改密码or登录
+    else if (bean.getType() == SmsConstants.SmsCaptchaType.CHANGE_PWD.code | bean.getType() == SmsConstants.SmsCaptchaType.LOGIN.code) {
+      if (null == adminMapper.selectByPhone(bean.getMobile())) {
+        ExceptionUtil.throwException(Errors.USER_MOBILE_NOT_REGISTER.code, "手机号未注册");
+      }
+    }
     // 是否频繁发送
     String mobileCaptchaJson = (String) redisUtil.get(captchaKey(bean.getType(), bean.getMobile()));
     if (StringUtil.isBlank(mobileCaptchaJson)) {

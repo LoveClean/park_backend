@@ -17,7 +17,7 @@
 
         <!-- JDBC 连接信息 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://122.112.225.34:3306/yuanqufuwu?serverTimezone=UTC&amp;tinyInt1isBit=false"
+                        connectionURL="jdbc:mysql://122.112.159.26:3306/park?serverTimezone=UTC&amp;tinyInt1isBit=false"
                         userId="root" password="!Q1q1q1q">
             <!-- 针对mysql数据库 -->
             <property name="useInformationSchema" value="true"></property>
@@ -65,7 +65,19 @@
 <!--               enableCountByExample="false" enableUpdateByExample="false"-->
 <!--               enableDeleteByExample="false" enableSelectByExample="false"-->
 <!--               selectByExampleQueryId="false"></table>-->
-        <table tableName="tb_enterprise" domainObjectName="Enterprise"
+        <!--<table tableName="tb_enterprise" domainObjectName="Enterprise"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="tb_information" domainObjectName="Information"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="tb_information_info" domainObjectName="InformationInfo"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"></table>-->
+        <table tableName="tb_slideshow" domainObjectName="Slideshow"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"></table>
