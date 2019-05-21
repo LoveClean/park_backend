@@ -11,15 +11,18 @@ import com.springboot.framework.dao.entity.House;
 import com.springboot.framework.service.impl.EnterpriseAppServiceImpl;
 import com.springboot.framework.util.DateUtil;
 import com.springboot.framework.util.ResponseEntity;
+import com.springboot.framework.util.ResponseEntityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.unit.DataUnit;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Api(tags = {"企业管理应用"}, produces = "application/json")
 @RestController
@@ -39,7 +42,10 @@ public class EnterpriseAppController extends BaseController {
     // 新增
     @ApiOperation(value = "新增企业", notes = "新增企业")
     @PostMapping(value = "insert")
-    public ResponseEntity<Object> insert(@RequestBody EnterpriseInsertRequestBean bean, HttpServletRequest request) {
+    public ResponseEntity<Object> insert(@RequestBody @Valid EnterpriseInsertRequestBean bean, BindingResult bindingResult , HttpServletRequest request) {
+        if(bindingResult.hasErrors()){
+            return ResponseEntityUtil.fail(bindingResult.getFieldError().getDefaultMessage());
+        }
         Enterprise enterprise = new Enterprise();
         BeanUtils.copyProperties(bean, enterprise);
         enterprise.setBeginDate(DateUtil.stringToDate(bean.getBeginDate(), DateUtil.yyyy_MM_dd));

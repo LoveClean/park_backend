@@ -39,10 +39,10 @@ public class EnterpriseAppServiceImpl {
 
 
     public ResponseEntity<Object> insert(Enterprise enterprise) {
-        // 判断企业名是否存在
-        if (!checkEnterpriseName(enterprise.getName(), null)) {
-            return ResponseEntityUtil.fail("该企业已存在");
-        }
+//        // 判断企业名是否存在
+//        if (!checkEnterpriseName(enterprise.getName(), null)) {
+//            return ResponseEntityUtil.fail("该企业已存在");
+//        }
         if (enterpriseMapper.insertSelective(enterprise) == 0) {
             return ResponseEntityUtil.fail("企业新增失败");
         }
