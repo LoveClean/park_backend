@@ -43,7 +43,7 @@ public class ParkController extends BaseController {
     @ApiOperation(value = "游客申请新增", notes = "游客申请新增")
     @PostMapping(value = "apply")
     public ResponseEntity<Errors> apply(@RequestBody ParkApply bean) {
-        ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", null);
+        ParkDTO recordDTO = new ParkDTO(bean.getParkName(), bean.getLogo(), bean.getLocation(), bean.getAddress(), bean.getLongitude(), bean.getLatitude(), bean.getIntroduction(), bean.getSort(), "游客", bean.getAppIds());
         return parkService.apply(recordDTO, bean.getAdminPhone());
     }
 

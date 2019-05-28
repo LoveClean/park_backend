@@ -15,5 +15,6 @@ public class ParkApply {
     private String introduction;
     private Byte sort;
 
+    private Integer[] appIds;
     private String adminPhone;
 }

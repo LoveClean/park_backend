@@ -77,6 +77,11 @@ public class ParkServiceImpl implements ParkService {
         if (parkMapper.insertSelective(record) != 1) {
             return ResponseEntityUtil.fail("园区添加失败");
         }
+        Integer parkId = record.getId();
+        Integer[] appIds = recordDTO.getAppIds();
+        if (appIds.length > 0) {
+            connectionForPark(parkId, appIds);
+        }
         //2.创建entityAdmin
         Admin admin = adminMapper.selectByPhone(adminPhone);
         admin.setParkId(record.getId());
