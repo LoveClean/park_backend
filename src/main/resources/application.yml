@@ -49,6 +49,10 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
     name: datasource
     url: jdbc:mysql://122.112.159.26:3306/park?zeroDateTimeBehavior=CONVERT_TO_NULL&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT%2b8
