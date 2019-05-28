@@ -52,9 +52,9 @@ public class EnterpriseAppServiceImpl {
 
     public ResponseEntity<Object> update(Enterprise enterprise) {
         // 判断企业名是否重复
-        if (!checkEnterpriseName(enterprise.getName(), enterprise.getId())) {
-            return ResponseEntityUtil.fail("该企业已存在");
-        }
+//        if (!checkEnterpriseName(enterprise.getName(), enterprise.getId())) {
+//            return ResponseEntityUtil.fail("该企业已存在");
+//        }
         if (enterpriseMapper.updateByPrimaryKeySelective(enterprise) == 0) {
             return ResponseEntityUtil.fail("企业修改失败");
         }
