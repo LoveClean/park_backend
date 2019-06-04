@@ -34,13 +34,13 @@ public class HouseUpdateRequestBean {
 
     private Byte registeredCompany;
 
-    private BigDecimal usageRate;
+//    private BigDecimal usageRate;
 
     private BigDecimal unitPrice;
 
     private BigDecimal price;
 
-    private BigDecimal serviceCharge;
+//    private BigDecimal serviceCharge;
 
     private BigDecimal cashPledge;
 

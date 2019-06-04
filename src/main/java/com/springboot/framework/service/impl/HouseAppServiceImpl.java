@@ -14,6 +14,7 @@ import com.springboot.framework.util.ResponseEntityUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +34,11 @@ public class HouseAppServiceImpl implements HouseAppService {
         PageHelper.startPage(pageNum, pageSize);
         List<House> houseList = houseMapper.selectListByParkId(parkId);
         return PageUtil.page(houseList);
+    }
+
+    @Override
+    public House selectById(Integer houseId){
+        return houseMapper.selectByPrimaryKey(houseId);
     }
 
     @Override
@@ -58,12 +64,18 @@ public class HouseAppServiceImpl implements HouseAppService {
     }
 
     @Override
-    public ResponseEntity<Object> update(House house, List<String> newImg, List<String> delImg) {
+    public ResponseEntity<Object> update(House house, List<String> newImg, List<String> delImg , Integer adminParkId) {
+        House house1 = this.selectById(house.getId());
+        if(house == null){
+            return ResponseEntityUtil.fail("房源不存在");
+        }else if(!house1.getParkId().equals(adminParkId)){
+            return ResponseEntityUtil.fail("没有权限");
+        }
         if (houseMapper.updateByPrimaryKeySelective(house) == 0) {
             return ResponseEntityUtil.fail("房源修改失败");
         }
         // 新增图片
-        if (newImg.size() > 0) {
+        if (newImg!=null && newImg.size() > 0) {
             for (String img : newImg) {
                 HousePicture housePicture = new HousePicture();
                 housePicture.setHouseId(house.getId());
@@ -72,7 +84,7 @@ public class HouseAppServiceImpl implements HouseAppService {
             }
         }
         // 删除图片
-        if (delImg.size() > 0) {
+        if (delImg!=null && delImg.size() > 0) {
             housePictureMapper.batchDeleteByImgUrl(delImg);
         }
         return ResponseEntityUtil.success();

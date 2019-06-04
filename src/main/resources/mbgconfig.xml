@@ -77,7 +77,7 @@
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"></table>-->
-        <table tableName="tb_slideshow" domainObjectName="Slideshow"
+        <table tableName="tb_serve_apply" domainObjectName="ServeApply"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"></table>

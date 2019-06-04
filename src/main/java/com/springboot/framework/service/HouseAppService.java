@@ -14,11 +14,13 @@ public interface HouseAppService {
 
     PageResponseBean selectListByParkId(int pageNum, int pageSize, Integer parkId);
 
+    House selectById(Integer houseId);
+
     ResponseEntity<Object> deleteByHouseId(int houseId);
 
     ResponseEntity<Object> insert(House house, List<String> imgs);
 
-    ResponseEntity<Object> update(House house, List<String> newImg, List<String> delImg);
+    ResponseEntity<Object> update(House house, List<String> newImg, List<String> delImg, Integer adminParkId);
 
     ResponseEntity<Object> selectImg(Integer houseId);
 }
